@@ -2,8 +2,9 @@ from sh import dnf, ErrorReturnCode, contrib, flatpak
 from .load_config import load_config
 
 from loguru import logger
+from os import getenv
 
-root_pass = load_config()["ROOT_PASS"]
+root_pass = getenv("ROOT_PASS")
 
 
 def install_package(package: str, package_manager: str = "dnf") -> bool:
