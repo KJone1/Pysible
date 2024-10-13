@@ -31,11 +31,12 @@ def install_flatpak():
             # ThreadPoolExecutor() does not take in arguments for the function
             # so doing this hack so i can pass "dnf" as package manager
             nonlocal installed_packages
-            status = install_package(package=package_name, package_manager="flatpak")
-            if status:
+            error = install_package(package=package_name, package_manager="flatpak")
+            if not error:
                 installed_packages += 1
+            else:
+                logger.error(error)
             pbar.update(1)
-            return status
 
         with ThreadPoolExecutor(max_workers=8) as executor:
             executor.map(install_flatpak_packages, package_list)
