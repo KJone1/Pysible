@@ -3,7 +3,7 @@ from os import getenv
 from loguru import logger
 
 
-def check_exists(var):
+def check_exists(var: str):
     value = getenv(var)
     if value is None:
         logger.fatal(f"Missing {var} env var, Exiting...")
