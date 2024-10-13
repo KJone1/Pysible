@@ -1,20 +1,18 @@
 from sh import dnf, ErrorReturnCode, contrib, flatpak
-from .load_config import load_config
 
 from loguru import logger
 from os import getenv
-
-root_pass = getenv("ROOT_PASS")
 
 
 def install_package(package: str, package_manager: str = "dnf") -> bool:
     """Installs a single package using a package manager"""
     try:
-        with contrib.sudo(password=root_pass, _with=True):
+        root_pass = getenv("ROOT_PASS")
+        with contrib.sudo(_with=True, password=root_pass):
             if package_manager == "dnf":
                 dnf("-y", "install", package)
             if package_manager == "flatpak":
-                flatpak("-y", "install", package)
+                flatpak("-y", "install", "flathub", package)
             status = True
             return status
         logger.error(f"Package manager: {package_manager} is not supported")
@@ -23,7 +21,7 @@ def install_package(package: str, package_manager: str = "dnf") -> bool:
 
     except ErrorReturnCode as e:
         logger.error(
-            f"Encounter an error when tried to install {package} => {e.stderr}"
+            f"Encounter an error when tried to install {package} => {e.stderr.decode('utf-8').strip()}"
         )
         status = False
         return status
