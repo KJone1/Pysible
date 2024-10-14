@@ -4,7 +4,7 @@ from loguru import logger
 from tqdm import tqdm
 
 
-def install_dnf():
+def install_dnf() -> None:
     """
     Installs a list of packages in parallel using dnf.
     """

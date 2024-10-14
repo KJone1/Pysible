@@ -6,7 +6,7 @@ from src.utils.flatpak import setup_flatpak_repo
 from tqdm import tqdm
 
 
-def install_flatpak():
+def install_flatpak() -> None:
     """
     Installs a list of packages in parallel using flatpak.
     """
