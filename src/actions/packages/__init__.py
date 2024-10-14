@@ -7,3 +7,4 @@ def setup_packages():
     """Sets up all relevant packages"""
     install_dnf()
     install_flatpak()
+    install_tomb()

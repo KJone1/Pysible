@@ -1,7 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
-from pysible.utils.install_package import install_package
+from src.utils.install_package import install_package
 from loguru import logger
-from pysible.utils.flatpak import setup_flatpak_repo
+from src.utils.flatpak import setup_flatpak_repo
 
 from tqdm import tqdm
 

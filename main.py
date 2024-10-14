@@ -1,9 +1,7 @@
-from pysible.actions.packages import setup_packages
+from src.actions.packages import setup_packages
 from sys import stdout
 from loguru import logger
-from pysible.utils.load_config import load_config
-
-from sh import rm
+from src.utils.load_config import load_config
 
 
 def build():
@@ -20,6 +18,11 @@ def run():
     setup_packages()
 
 
+def destroy():
+    pass
+
+
 if __name__ == "__main__":
     build()
     run()
+    destroy()

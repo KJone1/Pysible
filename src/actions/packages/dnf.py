@@ -1,5 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
-from pysible.utils.install_package import install_package
+from src.utils.install_package import install_package
 from loguru import logger
 from tqdm import tqdm
 
