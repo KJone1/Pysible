@@ -6,8 +6,9 @@ from os import getenv
 def install_package(package: str, package_manager: str = "dnf") -> str or None:
     """
     Installs a single package using a package manager
-      Args:
-      data: The data to be processed.
+    Args:
+      package: The package to download.
+      package_manager: Which package manager to use.
 
     Returns:
       A tuple containing:
