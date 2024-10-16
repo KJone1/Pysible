@@ -1,4 +1,5 @@
 from src.software import setup_packages
+from src.system import setup_system
 from sys import stdout
 from loguru import logger
 from src.config import load_config
@@ -19,6 +20,7 @@ def build():
 
 def run():
     setup_packages()
+    setup_system()
 
 
 def destroy():
