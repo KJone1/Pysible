@@ -1,9 +1,9 @@
 from concurrent.futures import ThreadPoolExecutor
-from src.utils.install_package import install_package
+from src.utils import install_package, setup_flatpak_repo
 from loguru import logger
-from src.utils.flatpak import setup_flatpak_repo
 
-from tqdm import tqdm
+
+from yaspin import yaspin
 
 
 def install_flatpak() -> None:
@@ -25,7 +25,7 @@ def install_flatpak() -> None:
 
     logger.info(f"Starting installation of {total_packages} flatpak packages.")
 
-    with tqdm(total=total_packages, desc="Installing...") as pbar:
+    with yaspin():
 
         def install_flatpak_packages(package_name):
             # ThreadPoolExecutor() does not take in arguments for the function
@@ -36,7 +36,6 @@ def install_flatpak() -> None:
                 installed_packages += 1
             else:
                 logger.error(error)
-            pbar.update(1)
 
         with ThreadPoolExecutor(max_workers=8) as executor:
             executor.map(install_flatpak_packages, package_list)

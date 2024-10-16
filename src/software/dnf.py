@@ -1,7 +1,7 @@
 from concurrent.futures import ThreadPoolExecutor
-from src.utils.install_package import install_package
+from src.utils import install_package
 from loguru import logger
-from tqdm import tqdm
+from yaspin import yaspin
 
 
 def install_dnf() -> None:
@@ -35,13 +35,15 @@ def install_dnf() -> None:
         "cowsay",
         "flatpak",
         "zsh",
+        "make",
+        "steghide",
     }
     total_packages = len(package_list)
     installed_packages = 0
 
     logger.info(f"Starting installation of {total_packages} dnf packages.")
 
-    with tqdm(total=total_packages, desc="Installing...") as pbar:
+    with yaspin(text="Installing ", ellipsis="..."):
 
         def install_dnf_packages(package_name):
             # ThreadPoolExecutor() does not take in arguments for the function
@@ -52,7 +54,6 @@ def install_dnf() -> None:
                 installed_packages += 1
             else:
                 logger.error(error)
-            pbar.update(1)
 
         with ThreadPoolExecutor(max_workers=8) as executor:
             executor.map(install_dnf_packages, package_list)
