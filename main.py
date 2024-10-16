@@ -1,7 +1,9 @@
-from src.actions.packages import setup_packages
+from src.software import setup_packages
 from sys import stdout
 from loguru import logger
-from src.utils.load_config import load_config
+from src.config import load_config
+
+from src.utils import delete_tmp_dir
 
 
 def build():
@@ -11,6 +13,7 @@ def build():
         format="<green>{time:YYYY-MM-DD HH:mm:ss}</green> | <level>{level}</level> | <level>{message}</level>",
     )
     load_config()
+    destroy()
     logger.info("Lets Roll...")
 
 
@@ -19,7 +22,7 @@ def run():
 
 
 def destroy():
-    pass
+    delete_tmp_dir()
 
 
 if __name__ == "__main__":
