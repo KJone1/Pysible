@@ -1,8 +1,10 @@
-from sh import cp, ErrorReturnCode
-import os
+from sh import cp, ErrorReturnCode, contrib
+from os import getenv, path
+from pathlib import Path
+from loguru import logger
 
 
-def copy(filename, dest) -> str or None:
+def copy_resource(filename, dest) -> str or None:
     """
     Copies a file from the 'resources' directory to a destination
 
@@ -11,11 +13,16 @@ def copy(filename, dest) -> str or None:
       dest: Destination path.
     """
     try:
-        resources_dir = os.path.join(os.path.dirname(__file__), "resources")
-        source_path = os.path.join(resources_dir, filename)
+        root_dir = Path(__file__).absolute().parent.parent.parent
+        resources_dir = path.join(root_dir, "resources")
+        source_path = path.join(resources_dir, filename)
 
-        cp(source_path, dest)
-        print(f"Copied {filename} to {dest}")
+        root_pass = getenv("ROOT_PASS")
+        with contrib.sudo(_with=True, password=root_pass):
+            cp(source_path, dest)
+
+        logger.info(f"Copied {filename} to {dest}")
+        return None
 
     except ErrorReturnCode as e:
         return f"Error copying {filename} => {e}"
