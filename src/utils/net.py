@@ -1,4 +1,6 @@
 import requests
+from sh import git, ErrorReturnCode
+from os import makedirs
 
 
 def wget(url: str, dest: str) -> str or None:
@@ -17,3 +19,18 @@ def wget(url: str, dest: str) -> str or None:
         return None
     except Exception as e:
         return str(e)
+
+
+def git_clone(repo_url, dest) -> str or None:
+    """Clone a Git repository
+
+    Args:
+      repo_url: The URL of the Git repository.
+      dest: The local directory where the repository should be cloned.
+    """
+    try:
+        makedirs(dest, exist_ok=True)
+        git.clone(repo_url, dest)
+        return None
+    except ErrorReturnCode as e:
+        return f"Error cloning repository: {e}"
