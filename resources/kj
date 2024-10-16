@@ -1,0 +1,2 @@
+kj ALL = (root) NOPASSWD: /usr/bin/nerdctl
+kj ALL = (root) NOPASSWD: /usr/local/bin/k0s
