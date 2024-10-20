@@ -28,7 +28,7 @@ def update_sddm_theme():
                 else:
                     f.write(line)
 
-        print(f"Successfully updated SDDM theme to {THEME_NAME} in {CONFIG_FILE}")
+        logger.info(f"Successfully updated SDDM theme to {THEME_NAME} in {CONFIG_FILE}")
 
     except FileNotFoundError:
         logger.error(f"sddm.conf configuration file not found at: {CONFIG_FILE}")
