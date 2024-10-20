@@ -8,6 +8,7 @@ def install_tomb(version: str = "2.11") -> None:
     try:
         TMP_DIR = "tmp/tomb"
         ERROR_MSG = "Encounter an error while installing Tomb, skipping..."
+
         logger.info("Starting to install Tomb...")
         create_tmp_dir(name="tomb")
 
@@ -18,11 +19,13 @@ def install_tomb(version: str = "2.11") -> None:
             logger.error(err)
             logger.error(ERROR_MSG)
             return
+
         err = untar(input=f"tmp/tomb/{version}.tar.gz", output=TMP_DIR, strip=True)
         if err:
             logger.error(err)
             logger.error(ERROR_MSG)
             return
+
         root_pass = getenv("ROOT_PASS")
         with sh.contrib.sudo(_with=True, password=root_pass):
             sh.make("install", _cwd=TMP_DIR)
