@@ -13,7 +13,7 @@ def clone_sddm_theme() -> None:
     logger.info(f"Successfully cloned {REPO_URL} to {DEST}")
 
 
-def update_sddm_theme():
+def update_sddm_theme() -> None:
     """Updates the SDDM theme in the KDE settings configuration file"""
     CONFIG_FILE = "/etc/sddm.conf.d/kde_settings.conf"
     THEME_NAME = "sddm-dark-chocolate"
