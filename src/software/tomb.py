@@ -7,7 +7,7 @@ from os import getenv
 def install_tomb(version: str = "2.11") -> None:
     try:
         TMP_DIR = "tmp/tomb"
-        error_msg = "Encounter an error while installing Tomb, skipping..."
+        ERROR_MSG = "Encounter an error while installing Tomb, skipping..."
         logger.info("Starting to install Tomb...")
         create_tmp_dir(name="tomb")
 
@@ -16,12 +16,12 @@ def install_tomb(version: str = "2.11") -> None:
         err = wget(url=url, dest=local_filename)
         if err:
             logger.error(err)
-            logger.error(error_msg)
+            logger.error(ERROR_MSG)
             return
         err = untar(input=f"tmp/tomb/{version}.tar.gz", output=TMP_DIR, strip=True)
         if err:
             logger.error(err)
-            logger.error(error_msg)
+            logger.error(ERROR_MSG)
             return
         root_pass = getenv("ROOT_PASS")
         with sh.contrib.sudo(_with=True, password=root_pass):
