@@ -12,9 +12,9 @@ def install_tomb(version: str = "2.11") -> None:
         logger.info("Starting to install Tomb...")
         create_tmp_dir(name="tomb")
 
-        url = f"https://github.com/dyne/tomb/archive/refs/tags/v{version}.tar.gz"
-        local_filename = f"{TMP_DIR}/{version}.tar.gz"
-        err = wget(url=url, dest=local_filename)
+        URL = f"https://github.com/dyne/tomb/archive/refs/tags/v{version}.tar.gz"
+        LOCAL_FILENAME = f"{TMP_DIR}/{version}.tar.gz"
+        err = wget(url=URL, dest=LOCAL_FILENAME)
         if err:
             logger.error(err)
             logger.error(ERROR_MSG)
