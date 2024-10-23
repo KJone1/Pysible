@@ -2,10 +2,7 @@ from sh import cp, ErrorReturnCode
 from os import path
 from pathlib import Path
 
-from .sudo import sudo
 
-
-@sudo
 def copy_resource(filename, dest) -> str or None:
     """
     Copies a file from the 'resources' directory to a destination
