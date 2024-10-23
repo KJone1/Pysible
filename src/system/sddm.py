@@ -1,16 +1,18 @@
 from src.utils import git_clone
 from loguru import logger
 import re
+from sh import ErrorReturnCode
 
 
 def clone_sddm_theme() -> None:
     REPO_URL = "https://github.com/KJone1/sddm-dark-chocolate.git"
     DEST = "/usr/share/sddm/themes/sddm-dark-chocolate"
-    err = git_clone(repo_url=REPO_URL, dest=DEST)
-    if err:
-        logger.error(f"Failed to Setup SDDM theme with error => {err}")
-        return
-    logger.info(f"Successfully cloned {REPO_URL} to {DEST}")
+    try:
+        git_clone(repo_url=REPO_URL, dest=DEST)
+    except ErrorReturnCode as err:
+        logger.error(f"Failed to Clone SDDM theme -> {err}")
+    else:
+        logger.info(f"Successfully cloned {REPO_URL} to {DEST}")
 
 
 def update_sddm_theme() -> None:
@@ -33,4 +35,4 @@ def update_sddm_theme() -> None:
     except FileNotFoundError:
         logger.error(f"sddm.conf configuration file not found at: {CONFIG_FILE}")
     except Exception as e:
-        logger.error(f"An error occurred: {e}")
+        logger.error(f"An error occurred while updating '{CONFIG_FILE}': {e}")

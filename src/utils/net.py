@@ -21,7 +21,7 @@ def wget(url: str, dest: str) -> str or None:
         return str(e)
 
 
-def git_clone(repo_url, dest) -> str or None:
+def git_clone(repo_url, dest) -> None:
     """Clone a Git repository
 
     Args:
@@ -29,8 +29,9 @@ def git_clone(repo_url, dest) -> str or None:
       dest: The local directory where the repository should be cloned.
     """
     try:
-        makedirs(dest, exist_ok=True)
+        makedirs(dest)
         git.clone(repo_url, dest)
-        return None
+    except FileExistsError:
+        git.pull(_cwd=dest)
     except ErrorReturnCode as e:
-        return f"Error cloning repository: {e}"
+        raise ErrorReturnCode(f"Error cloning repository: {e}")

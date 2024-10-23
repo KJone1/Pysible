@@ -9,10 +9,10 @@ def setup_sudoers_for_user() -> None:
     SUDOERS_PATH = "/etc/sudoers.d/kj"
     try:
         visudo("-c", "-f", f"resources/{SUDOERS_FILE_NAME}")
+        copy_resource(filename=SUDOERS_FILE_NAME, dest=SUDOERS_PATH)
     except ErrorReturnCode as e:
         logger.error(f"Error validating sudoers file: {e}")
-        return
+    except FileNotFoundError as e:
+        logger.error(e)
     else:
-        err = copy_resource(filename=SUDOERS_FILE_NAME, dest=SUDOERS_PATH)
-        if err:
-            logger.error(err)
+        logger.info(f"Copied {SUDOERS_FILE_NAME} to {SUDOERS_PATH}")
