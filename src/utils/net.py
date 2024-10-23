@@ -3,22 +3,28 @@ from sh import git, ErrorReturnCode
 from os import makedirs
 
 
-def wget(url: str, dest: str) -> str or None:
+def wget(url: str, dest: str) -> None:
     """Downloads a file from a URL.
 
     Args:
       url: The URL of the file to download.
       dest: The path where the file should be saved.
+    Returns:
+      None
     """
     try:
+        if not url.startswith("http"):
+            raise ValueError("Invalid URL format.")
+
         with requests.get(url, stream=True) as r:
             r.raise_for_status()
             with open(dest, "wb") as f:
                 for chunk in r.iter_content(chunk_size=8192):
                     f.write(chunk)
-        return None
+    except requests.HTTPError as e:
+        raise requests.HTTPError(f"HTTP error occurred: {e}") from e
     except Exception as e:
-        return str(e)
+        raise RuntimeError(f"An unexpected error occurred: {e}") from e
 
 
 def git_clone(repo_url, dest) -> None:
@@ -34,4 +40,4 @@ def git_clone(repo_url, dest) -> None:
     except FileExistsError:
         git.pull(_cwd=dest)
     except ErrorReturnCode as e:
-        raise ErrorReturnCode(f"Error cloning repository: {e}")
+        raise ErrorReturnCode(f"Error cloning repository: {e}") from e

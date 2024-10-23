@@ -2,7 +2,7 @@ import tarfile
 from os import path, sep
 
 
-def untar(input: str, output: str, strip: bool = False) -> str or None:
+def untar(input: str, output: str, strip: bool = False) -> None:
     try:
         with tarfile.open(input, "r:gz") as tar:
             if strip:
@@ -13,7 +13,5 @@ def untar(input: str, output: str, strip: bool = False) -> str or None:
                     tar.extract(member, output)
             else:
                 tar.extractall(output)
-            return None
-
     except Exception as e:
-        return str(e)
+        raise e
