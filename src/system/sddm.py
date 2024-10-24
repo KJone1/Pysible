@@ -7,12 +7,15 @@ from sh import ErrorReturnCode
 def clone_sddm_theme() -> None:
     REPO_URL = "https://github.com/KJone1/sddm-dark-chocolate.git"
     DEST = "/usr/share/sddm/themes/sddm-dark-chocolate"
+    success = True
     try:
         git_clone(repo_url=REPO_URL, dest=DEST)
     except ErrorReturnCode as err:
         logger.error(f"Failed to Clone SDDM theme -> {err}")
+        success = False
     else:
         logger.info(f"Successfully cloned {REPO_URL} to {DEST}")
+    return success
 
 
 def update_sddm_theme() -> None:
