@@ -31,3 +31,15 @@ def install_package(package: str, package_manager: str = "dnf") -> str or None:
     except ErrorReturnCode as e:
         error = f"Encounter an error when tried to install {package} => {e.stderr.decode('utf-8').strip()}"
         return error
+
+
+def setup_flatpak_repo():
+    """Add remote repo for flatpak if does not exists"""
+    root_pass = getenv("ROOT_PASS")
+    with contrib.sudo(password=root_pass, _with=True):
+        flatpak(
+            "remote-add",
+            "--if-not-exists",
+            "flathub",
+            "https://dl.flathub.org/repo/flathub.flatpakrepo",
+        )
