@@ -40,4 +40,4 @@ def git_clone(repo_url, dest) -> None:
     except FileExistsError:
         git.pull(_cwd=dest)
     except ErrorReturnCode as e:
-        raise ErrorReturnCode(f"Error cloning repository: {e}") from e
+        raise e from e
