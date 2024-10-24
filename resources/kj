@@ -1,2 +1,3 @@
 kj ALL = (root) NOPASSWD: /usr/bin/nerdctl
 kj ALL = (root) NOPASSWD: /usr/local/bin/k0s
+kj ALL = (root) NOPASSWD: /usr/bin/dnf
