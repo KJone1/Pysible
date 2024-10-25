@@ -7,6 +7,9 @@ from .sudo import sudo_run
 import tarfile
 
 
+import src.config.constants as const
+
+
 def copy_resource(filename, dest, sudo=False) -> str:
     """
     Copies a file from the 'resources' directory to a destination
@@ -23,10 +26,7 @@ def copy_resource(filename, dest, sudo=False) -> str:
       ErrorReturnCode: If sh.cp fails to copy
     """
 
-    ROOT_DIR = Path(__file__).absolute().parent.parent.parent
-    RESOURCES_DIR = path.join(ROOT_DIR, "resources")
-
-    source_path = path.join(RESOURCES_DIR, filename)
+    source_path = path.join(const.RESOURCES_DIR, filename)
 
     if not path.exists(source_path) or not path.isfile(source_path):
         raise FileNotFoundError(f"Copying {source_path} Failed -> File not found")

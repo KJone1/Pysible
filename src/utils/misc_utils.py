@@ -1,18 +1,17 @@
 import sh
-from os import path, getenv
+from os import path
 from shutil import rmtree
 
-
-ROOT_TMP_DIR = "tmp"
+import src.config.constants as const
 
 
 def create_tmp_dir(name: str) -> None:
-    sh.mkdir("-p", f"{ROOT_TMP_DIR}/{name}")
+    sh.mkdir("-p", f"{const.TMP_DIR}/{name}")
 
 
 def delete_tmp_dir() -> None:
-    if path.exists(ROOT_TMP_DIR):
-        rmtree(ROOT_TMP_DIR)
+    if path.exists(const.TMP_DIR):
+        rmtree(const.TMP_DIR)
 
 
 def sudo_run(command: str, *args) -> None:
@@ -26,6 +25,6 @@ def sudo_run(command: str, *args) -> None:
     raises:
         sh.ErrorReturnCode: if the command execution fails.
     """
-    root_pass = getenv("root_pass")
-    with sh.contrib.sudo(_with=True, password=root_pass):
+
+    with sh.contrib.sudo(_with=True, password=const.ROOT_PASS):
         getattr(sh, command)(*args)
