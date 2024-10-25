@@ -1,12 +1,7 @@
 import sh
 from os import path, sep
-from pathlib import Path
-
 from .sudo import sudo_run
-
 import tarfile
-
-
 import src.config.constants as const
 
 

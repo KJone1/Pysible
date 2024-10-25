@@ -1,7 +1,6 @@
 import sh
 from os import path
 from shutil import rmtree
-
 import src.config.constants as const
 
 
