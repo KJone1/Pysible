@@ -33,7 +33,7 @@ def install_package(package: str, package_manager: str = "dnf") -> str or None:
         return error
 
 
-def setup_flatpak_repo():
+def setup_flatpak_repo() -> None:
     """Add remote repo for flatpak if does not exists"""
     root_pass = getenv("ROOT_PASS")
     with contrib.sudo(password=root_pass, _with=True):

@@ -9,8 +9,6 @@ def wget(url: str, dest: str) -> None:
     Args:
       url: The URL of the file to download.
       dest: The path where the file should be saved.
-    Returns:
-      None
     """
     try:
         if not url.startswith("http"):
