@@ -1,6 +1,6 @@
-from sh import dnf, ErrorReturnCode, contrib, flatpak
+from sh import ErrorReturnCode
 
-from os import getenv
+from utils.misc_utils import sudo_run
 
 
 def install_package(package: str, package_manager: str = "dnf") -> str or None:
@@ -15,15 +15,13 @@ def install_package(package: str, package_manager: str = "dnf") -> str or None:
         - A boolean indicating success (True for OK, False for error).
         - Error or None if no error occurred.
     """
-    root_pass = getenv("ROOT_PASS")
     try:
-        with contrib.sudo(_with=True, password=root_pass):
-            if package_manager == "dnf":
-                dnf("-y", "install", package)
-            if package_manager == "flatpak":
-                flatpak("-y", "install", "flathub", package)
-            error = None
-            return error
+        if package_manager == "dnf":
+            sudo_run("dnf", "-y", "install", package)
+        if package_manager == "flatpak":
+            sudo_run("flatpak", "-y", "install", "flathub", package)
+        error = None
+        return error
 
         error = f"Package manager: {package_manager} is not supported"
         return error
@@ -35,11 +33,10 @@ def install_package(package: str, package_manager: str = "dnf") -> str or None:
 
 def setup_flatpak_repo() -> None:
     """Add remote repo for flatpak if does not exists"""
-    root_pass = getenv("ROOT_PASS")
-    with contrib.sudo(password=root_pass, _with=True):
-        flatpak(
-            "remote-add",
-            "--if-not-exists",
-            "flathub",
-            "https://dl.flathub.org/repo/flathub.flatpakrepo",
-        )
+    sudo_run(
+        "flatpak",
+        "remote-add",
+        "--if-not-exists",
+        "flathub",
+        "https://dl.flathub.org/repo/flathub.flatpakrepo",
+    )
