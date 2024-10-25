@@ -1,15 +1,15 @@
 import sh
 from loguru import logger
-from src.utils import untar, wget, create_tmp_dir
+from src.utils.file_utils import untar
+from src.utils.net_utils import wget
+from src.utils.misc_utils import create_tmp_dir
 from os import getenv
 
 
 def install_tomb(version: str = "2.11") -> None:
     TMP_DIR = "tmp/tomb"
-    ERROR_MSG = "Encounter an error while installing Tomb, skipping..."
 
     logger.info("Starting to install Tomb...")
-
     try:
 
         create_tmp_dir(name="tomb")
@@ -25,7 +25,8 @@ def install_tomb(version: str = "2.11") -> None:
             sh.make("install", _cwd=TMP_DIR)
 
     except sh.ErrorReturnCode as e:
-        logger.error(f"Encounter an ErrorReturnCode when tried to install Tomb -> {e}")
+        ERROR_MSG = "Encounter an ErrorReturnCode when tried to install Tomb"
+        logger.error(f"{ERROR_MSG} -> {e}")
     except Exception as e:
         logger.error(f"Encounter an error when tried to install Tomb -> {e}")
     else:
