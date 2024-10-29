@@ -1,5 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
-from src.utils import install_package, setup_flatpak_repo
+from src.utils.package_utils import install_package, setup_flatpak_repo
 from loguru import logger
 
 

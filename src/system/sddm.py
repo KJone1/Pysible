@@ -1,4 +1,4 @@
-from src.utils import git_clone
+from src.utils.net_utils import git_clone
 from loguru import logger
 import re
 from sh import ErrorReturnCode

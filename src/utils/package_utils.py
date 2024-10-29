@@ -1,5 +1,5 @@
 from sh import ErrorReturnCode
-from utils.misc_utils import sudo_run
+from .misc_utils import sudo_run
 
 
 def install_package(package: str, package_manager: str = "dnf") -> str or None:

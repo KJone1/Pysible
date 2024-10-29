@@ -1,5 +1,5 @@
 from concurrent.futures import ThreadPoolExecutor
-from src.utils import install_package
+from src.utils.package_utils import install_package
 from loguru import logger
 from yaspin import yaspin
 

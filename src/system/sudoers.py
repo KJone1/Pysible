@@ -1,4 +1,4 @@
-from src.utils import copy_resource
+from src.utils.file_utils import copy_resource
 from loguru import logger
 from sh import visudo, ErrorReturnCode
 import src.config.constants as const

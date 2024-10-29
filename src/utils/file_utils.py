@@ -1,6 +1,6 @@
 import sh
 from os import path, sep
-from .sudo import sudo_run
+from .misc_utils import sudo_run
 import tarfile
 import src.config.constants as const
 
