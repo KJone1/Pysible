@@ -1,6 +1,7 @@
-import requests
-from sh import git, ErrorReturnCode
 from os import makedirs
+
+import requests
+from sh import ErrorReturnCode, git
 
 
 def wget(url: str, dest: str) -> None:

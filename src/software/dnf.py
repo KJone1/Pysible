@@ -1,7 +1,9 @@
 from concurrent.futures import ThreadPoolExecutor
-from src.utils.package_utils import install_package
+
 from loguru import logger
 from yaspin import yaspin
+
+from src.utils.package_utils import install_package
 
 
 def install_dnf() -> None:

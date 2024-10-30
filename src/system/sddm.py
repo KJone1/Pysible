@@ -1,7 +1,9 @@
-from src.utils.net_utils import git_clone
-from loguru import logger
 import re
+
+from loguru import logger
 from sh import ErrorReturnCode
+
+from src.utils.net_utils import git_clone
 
 
 def clone_sddm_theme() -> None:

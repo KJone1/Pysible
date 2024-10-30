@@ -1,9 +1,11 @@
+from os import getenv
+
 import sh
 from loguru import logger
+
 from src.utils.file_utils import untar
-from src.utils.net_utils import wget
 from src.utils.misc_utils import create_tmp_dir
-from os import getenv
+from src.utils.net_utils import wget
 
 
 def install_tomb(version: str = "2.11") -> None:

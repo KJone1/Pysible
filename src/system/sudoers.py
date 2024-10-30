@@ -1,7 +1,8 @@
-from src.utils.file_utils import copy_resource
 from loguru import logger
-from sh import visudo, ErrorReturnCode
+from sh import ErrorReturnCode, visudo
+
 import src.config.constants as const
+from src.utils.file_utils import copy_resource
 
 
 def setup_sudoers_for_user() -> None:

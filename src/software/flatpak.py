@@ -1,9 +1,9 @@
 from concurrent.futures import ThreadPoolExecutor
-from src.utils.package_utils import install_package, setup_flatpak_repo
+
 from loguru import logger
-
-
 from yaspin import yaspin
+
+from src.utils.package_utils import install_package, setup_flatpak_repo
 
 
 def install_flatpak() -> None:

@@ -1,8 +1,11 @@
-import sh
-from os import path, sep
-from .misc_utils import sudo_run
 import tarfile
+from os import path, sep
+
+import sh
+
 import src.config.constants as const
+
+from .misc_utils import sudo_run
 
 
 def copy_resource(filename, dest, sudo=False) -> str:
