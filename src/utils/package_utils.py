@@ -16,19 +16,16 @@ def install_package(package: str, package_manager: str = "dnf") -> str or None:
         - Error or None if no error occurred.
     """
     try:
+        error = None
         if package_manager == "dnf":
             sudo_run("dnf", "-y", "install", package)
-        if package_manager == "flatpak":
+        elif package_manager == "flatpak":
             sudo_run("flatpak", "-y", "install", "flathub", package)
-        error = None
-        return error
-
-        error = f"Package manager: {package_manager} is not supported"
-        return error
-
+        else:
+            error = f"Package manager: {package_manager} is not supported"
     except ErrorReturnCode as e:
         error = f"Encounter an error when tried to install {package} => {e.stderr.decode('utf-8').strip()}"
-        return error
+    return error
 
 
 def setup_flatpak_repo() -> None:
