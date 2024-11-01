@@ -1,8 +1,13 @@
 FROM python:3.12.7-slim-bookworm
 
+ENV VIRTUAL_ENV=/opt/venv
+ENV PATH="$VIRTUAL_ENV/bin:$PATH"
+
 WORKDIR /app
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir \
+
+RUN python3 -m venv "${VIRTUAL_ENV}" && \
+    pip install --no-cache-dir --upgrade pip && \
+    pip install --no-cache-dir \
     flake8 \
     black \
     isort \
@@ -20,5 +25,4 @@ RUN pip install --no-cache-dir \
     pudb \
     pdbpp
 
-ENV PATH="/app/venv/bin:$PATH"
 CMD ["/bin/bash"]
