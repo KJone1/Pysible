@@ -1,7 +1,7 @@
 from os import makedirs
 
 import requests
-from sh import ErrorReturnCode, git
+import sh
 
 
 def wget(url: str, dest: str) -> None:
@@ -35,8 +35,8 @@ def git_clone(repo_url, dest) -> None:
     """
     try:
         makedirs(dest)
-        git.clone(repo_url, dest)
+        sh.contrib.git.clone(repo_url, dest)
     except FileExistsError:
-        git.pull(_cwd=dest)
-    except ErrorReturnCode as e:
+        sh.contrib.git.pull(_cwd=dest)
+    except sh.ErrorReturnCode as e:
         raise e from e
