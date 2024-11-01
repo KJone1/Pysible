@@ -53,3 +53,15 @@ def untar(input: str, output: str, strip: bool = False) -> None:
                 tar.extractall(output)
     except Exception as e:
         raise e
+
+
+def set_file_permissions(file_path, permission):
+    """
+    Sets the permissions of a file.
+
+    Args:
+        file_path: The path to the file.
+        permission: The permissions to set, in octal format (e.g. 0o755).
+    """
+    octal_permission = f"0o{permission}"
+    os.chmod(file_path, octal_permission)
