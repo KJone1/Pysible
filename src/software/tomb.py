@@ -20,7 +20,7 @@ def install_tomb(version: str = "2.11") -> None:
         LOCAL_FILENAME = f"{TMP_DIR}/{version}.tar.gz"
         wget(url=URL, dest=LOCAL_FILENAME)
 
-        untar(input=f"tmp/tomb/{version}.tar.gz", output=TMP_DIR, strip=True)
+        untar(input=LOCAL_FILENAME, output=TMP_DIR, strip=True)
 
         root_pass = getenv("ROOT_PASS")
         with sh.contrib.sudo(_with=True, password=root_pass):
