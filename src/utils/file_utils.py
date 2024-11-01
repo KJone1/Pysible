@@ -1,5 +1,5 @@
 import tarfile
-from os import path, sep
+import os
 
 import sh
 
@@ -24,9 +24,9 @@ def copy_resource(filename, dest, sudo=False) -> str:
       ErrorReturnCode: If sh.cp fails to copy
     """
 
-    source_path = path.join(const.RESOURCES_DIR, filename)
+    source_path = os.path.join(const.RESOURCES_DIR, filename)
 
-    if not path.exists(source_path) or not path.isfile(source_path):
+    if not os.path.exists(source_path) or not os.path.isfile(source_path):
         raise FileNotFoundError(f"Copying {source_path} Failed -> File not found")
 
     try:
@@ -46,7 +46,9 @@ def untar(input: str, output: str, strip: bool = False) -> None:
             if strip:
                 # --strip=1
                 for member in tar.getmembers():
-                    stripped_name = path.relpath(member.name, member.name.split(sep)[0])
+                    stripped_name = os.path.relpath(
+                        member.name, member.name.split(os.sep)[0]
+                    )
                     member.name = stripped_name
                     tar.extract(member, output)
             else:
