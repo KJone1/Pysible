@@ -1,10 +1,8 @@
-from os import getenv
-
 import sh
 from loguru import logger
 
 from src.utils.file_utils import untar
-from src.utils.misc_utils import create_tmp_dir
+from src.utils.misc_utils import create_tmp_dir, sudo_run
 from src.utils.net_utils import wget
 
 
@@ -22,9 +20,7 @@ def install_tomb(version: str = "2.11") -> None:
 
         untar(input=LOCAL_FILENAME, output=TMP_DIR, strip=True)
 
-        root_pass = getenv("ROOT_PASS")
-        with sh.contrib.sudo(_with=True, password=root_pass):
-            sh.make("install", _cwd=TMP_DIR)
+        sudo_run("make", "install", _cwd=TMP_DIR)
 
     except sh.ErrorReturnCode as e:
         ERROR_MSG = "Encounter an ErrorReturnCode when tried to install Tomb"

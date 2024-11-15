@@ -1,9 +1,18 @@
 import re
 
-from loguru import logger
 from sh import ErrorReturnCode
 
 from src.utils.net_utils import git_clone
+
+from src.utils.log_utils import Logger
+
+logger = Logger()
+
+
+def init_sddm() -> None:
+    clone_ok = clone_sddm_theme()
+    if clone_ok:
+        update_sddm_theme()
 
 
 def clone_sddm_theme() -> None:
@@ -12,11 +21,17 @@ def clone_sddm_theme() -> None:
     success = True
     try:
         git_clone(repo_url=REPO_URL, dest=DEST)
-    except ErrorReturnCode as err:
-        logger.error(f"Failed to Clone SDDM theme -> {err}")
+    except ErrorReturnCode as e:
+        logger.bad(f"Git clone returned a bad status code -> {e}")
+        success = False
+    except AttributeError:
+        logger.bad("Git not found")
+        success = False
+    except Exception as e:
+        logger.bad(f"Failed to Clone SDDM theme -> {e}")
         success = False
     else:
-        logger.info(f"Successfully cloned {REPO_URL} to {DEST}")
+        logger.good(f"Successfully cloned {REPO_URL} to {DEST}")
     return success
 
 
@@ -35,9 +50,9 @@ def update_sddm_theme() -> None:
                 else:
                     f.write(line)
 
-        logger.info(f"Successfully updated SDDM theme to {THEME_NAME} in {CONFIG_FILE}")
+        logger.good(f"Successfully updated SDDM theme to {THEME_NAME} in {CONFIG_FILE}")
 
     except FileNotFoundError:
-        logger.error(f"sddm.conf configuration file not found at: {CONFIG_FILE}")
+        logger.bad(f"sddm.conf configuration file not found at: {CONFIG_FILE}")
     except Exception as e:
-        logger.error(f"An error occurred while updating '{CONFIG_FILE}': {e}")
+        logger.bad(f"An error occurred while updating '{CONFIG_FILE}': {e}")

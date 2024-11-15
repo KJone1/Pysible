@@ -1,0 +1,15 @@
+debug = false
+# root is where all buildkit state is stored.
+root = "/var/lib/buildkit"
+
+[log]
+# log formatter: json or text
+format = "text"
+
+[worker.oci]
+enabled = false
+
+[worker.containerd]
+address = "/run/k0s/containerd.sock"
+enabled = true
+namespace = "buildkit-k8s.io"

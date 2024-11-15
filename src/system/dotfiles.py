@@ -1,12 +1,21 @@
 from os import path
 
-from loguru import logger
 from sh import ErrorReturnCode, bash
 
-import src.config.constants as const
+from src.config.constants import Consts
 from src.utils.net_utils import git_clone
 
-DEST = f"{const.HOME_DIR}/DEV/dotfiles"
+from src.utils.log_utils import Logger
+
+logger = Logger()
+
+DEST = f"{Consts.HOME_DIR}/DEV/dotfiles"
+
+
+def init_dotfiles() -> None:
+    clone_ok = clone_dotfiles()
+    if clone_ok:
+        run_dotfiles_intall_script()
 
 
 def clone_dotfiles() -> bool:
@@ -14,11 +23,17 @@ def clone_dotfiles() -> bool:
     success = True
     try:
         git_clone(repo_url=REPO_URL, dest=DEST)
-    except ErrorReturnCode as err:
-        logger.error(f"Failed to Setup dotfiles with error -> {err}")
+    except ErrorReturnCode as e:
+        logger.bad(f"Git clone returned a bad status code -> {e}")
+        success = False
+    except AttributeError:
+        logger.bad("Git not found")
+        success = False
+    except Exception as e:
+        logger.bad(f"Failed to Setup dotfiles -> {e}")
         success = False
     else:
-        logger.info(f"Successfully cloned {REPO_URL} to {DEST}")
+        logger.good(f"Successfully cloned {REPO_URL} to {DEST}")
     return success
 
 
@@ -27,6 +42,6 @@ def run_dotfiles_intall_script() -> None:
     try:
         bash(INSTALL_SCRIPT)
     except ErrorReturnCode as e:
-        logger.error(f"Error running dotfiles install script -> {e}")
+        logger.bad(f"Error running dotfiles install script -> {e}")
     else:
-        logger.info("dotfiles installed successfully")
+        logger.good("dotfiles installed successfully")

@@ -38,5 +38,5 @@ def git_clone(repo_url, dest) -> None:
         sh.contrib.git.clone(repo_url, dest)
     except FileExistsError:
         sh.contrib.git.pull(_cwd=dest)
-    except sh.ErrorReturnCode as e:
+    except Exception as e:
         raise e from e

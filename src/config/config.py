@@ -1,17 +1,21 @@
 from os import getenv
 
-from dotenv import load_dotenv
-from loguru import logger
+import dotenv
+from src.utils.log_utils import Logger
+
+logger = Logger()
 
 
-def check_exists(var: str):
-    value = getenv(var)
-    if value is None:
-        logger.fatal(f"Missing {var} env var, Exiting...")
-        exit(1)
-    logger.info(f"Retrieved {value} from => '{var}'")
+def load_env(var: str):
+    v = getenv(var)
+    if v is None:
+        config_dict = dotenv.dotenv_values(".env")
+        v = config_dict.get(var)
+        if v is None:
+            logger.bad(f"Missing {var} env var, Exiting...")
+            exit(1)
+    return v
 
 
 def load_config():
-    load_dotenv()
-    check_exists("ROOT_PASS")
+    dotenv.load_dotenv()

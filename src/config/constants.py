@@ -1,8 +1,15 @@
-from os import getenv, path
 from pathlib import Path
 
-ROOT_PASS: str = getenv("ROOT_PASS")
-ROOT_DIR: str = Path(__file__).absolute().parent.parent.parent
-HOME_DIR = getenv("HOME")
-RESOURCES_DIR: str = path.join(ROOT_DIR, "resources")
-TMP_DIR: str = path.join(ROOT_DIR, "tmp")
+from dataclasses import dataclass
+import os
+import src.config.config as config
+
+
+@dataclass(frozen=True)
+class Consts:
+    ROOT_PASS: str = config.load_env("ROOT_PASS")
+    ROOT_DIR: Path = Path(__file__).absolute().parent.parent.parent
+    HOME_DIR: str = os.getenv("HOME")
+    RESOURCES_DIR: Path = ROOT_DIR / "resources"
+    TMP_DIR: Path = ROOT_DIR / "tmp"
+    
