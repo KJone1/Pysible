@@ -7,8 +7,6 @@ from loguru import logger
 
 from src.config.constants import Consts
 
-
-
 from .misc_utils import sudo_run
 
 
@@ -74,12 +72,12 @@ def set_file_permissions(file_path, permission):
     """
     try:
         sudo_run("chmod", permission, f"{file_path}")
-    except ValueError:
-        logger.error(
-            f"Error changing permissions: Invalid permission format - should be a string"
-        )
+    except ValueError as e:
+        raise ValueError(
+            "Error changing permissions: Invalid permission format - should be a string"
+        ) from e
     except OSError as e:
-        logger.error(f"Error changing permissions of {file_path} -> {e}")
+        raise OSError(f"Error changing permissions of {file_path} -> {e}") from e
 
 
 def copy_file(source, dest):
