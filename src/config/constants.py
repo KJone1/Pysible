@@ -1,7 +1,7 @@
+import os
+from dataclasses import dataclass
 from pathlib import Path
 
-from dataclasses import dataclass
-import os
 import src.config.config as config
 
 
@@ -12,4 +12,3 @@ class Consts:
     HOME_DIR: str = os.getenv("HOME")
     RESOURCES_DIR: Path = ROOT_DIR / "resources"
     TMP_DIR: Path = ROOT_DIR / "tmp"
-    

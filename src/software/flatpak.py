@@ -2,9 +2,8 @@ from concurrent.futures import ThreadPoolExecutor
 
 from yaspin import yaspin
 
-from src.utils.package_utils import install_package, setup_flatpak_repo
-
 from src.utils.log_utils import Logger
+from src.utils.package_utils import install_package, setup_flatpak_repo
 
 logger = Logger()
 

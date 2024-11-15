@@ -3,9 +3,8 @@ from os import path
 from sh import ErrorReturnCode, bash
 
 from src.config.constants import Consts
-from src.utils.net_utils import git_clone
-
 from src.utils.log_utils import Logger
+from src.utils.net_utils import git_clone
 
 logger = Logger()
 

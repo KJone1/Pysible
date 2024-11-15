@@ -2,9 +2,8 @@ import re
 
 from sh import ErrorReturnCode
 
-from src.utils.net_utils import git_clone
-
 from src.utils.log_utils import Logger
+from src.utils.net_utils import git_clone
 
 logger = Logger()
 

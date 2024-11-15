@@ -1,6 +1,7 @@
 from os import getenv
 
 import dotenv
+
 from src.utils.log_utils import Logger
 
 logger = Logger()
