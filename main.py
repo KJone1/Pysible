@@ -163,12 +163,15 @@ def main():
 
         match choice:
             case "00":
-                beast_mode()
+                selected_modules = [task.get("number") for task in tasks]
+                run_modules(
+                    selected_modules,
+                )
             case "100":
                 selected_modules = [
-                    task["number"]
+                    task.get("number")
                     for task in tasks
-                    if task["section"] == Sections.SYSTEM.value
+                    if task("section") == Sections.SYSTEM.value
                 ]
                 run_modules(
                     selected_modules,
