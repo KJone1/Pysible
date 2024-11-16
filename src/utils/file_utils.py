@@ -10,7 +10,7 @@ from src.config.constants import Consts
 from .misc_utils import sudo_run
 
 
-def copy_resource(filename, dest, sudo=False) -> str:
+def copy_resource(filename: str, dest: str, sudo=False) -> str:
     """
     Copies a file from the 'resources' directory to a destination
 
