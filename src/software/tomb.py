@@ -1,11 +1,9 @@
 import sh
 
 from src.utils.file_utils import untar
+from src.utils.log_utils import Logger
 from src.utils.misc_utils import create_tmp_dir, sudo_run
 from src.utils.net_utils import wget
-
-from src.utils.log_utils import Logger
-
 
 logger = Logger()
 

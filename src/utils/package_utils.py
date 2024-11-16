@@ -1,4 +1,3 @@
-from sh import ErrorReturnCode
 
 from .misc_utils import sudo_run
 

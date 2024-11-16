@@ -1,14 +1,9 @@
 import os
 from collections import defaultdict
 from enum import Enum
-from sys import stdout
 
-from colorama import Fore
-from loguru import logger
 from rich.box import SIMPLE_HEAVY
 from rich.console import Console
-from rich.panel import Panel
-from rich.progress import Progress, SpinnerColumn, TextColumn, TimeElapsedColumn
 from rich.prompt import Prompt
 from rich.table import Table
 
@@ -17,11 +12,10 @@ import src.software.dnf as dnf
 import src.software.flatpak as flatpak
 import src.software.tomb as tomb
 import src.system.dotfiles as dotfiles
-import src.system.sddm as sddm
 import src.system.moonlander as moonlander
+import src.system.sddm as sddm
 import src.system.sudoers as sudoers
 from src.config.config import load_config
-
 # from src.system import setup_system
 from src.utils.misc_utils import delete_tmp_dir
 
