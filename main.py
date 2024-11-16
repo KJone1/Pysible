@@ -17,8 +17,9 @@ import src.software.dnf as dnf
 import src.software.flatpak as flatpak
 import src.software.tomb as tomb
 import src.system.dotfiles as dotfiles
-import src.system.sudoers as sudoers
 import src.system.sddm as sddm
+import src.system.moonlander as moonlander
+import src.system.sudoers as sudoers
 from src.config.config import load_config
 
 # from src.system import setup_system
@@ -65,20 +66,38 @@ tasks = [
     },
     {
         "number": "6",
+        "name": "Install Nerdctl",
+        "func": containers.install_nerdctl,
+        "section": Sections.SOFTWARE.value,
+    },
+    {
+        "number": "7",
+        "name": "Install k9s",
+        "func": containers.install_k9s,
+        "section": Sections.SOFTWARE.value,
+    },
+    {
+        "number": "8",
         "name": "Configure Dotfiles",
         "func": dotfiles.init_dotfiles,
         "section": Sections.SYSTEM.value,
     },
     {
-        "number": "7",
+        "number": "9",
         "name": "Configure SDDM Theme",
         "func": sddm.init_sddm,
         "section": Sections.SYSTEM.value,
     },
     {
-        "number": "8",
+        "number": "10",
         "name": "Configure Sudoers for User",
         "func": sudoers.setup_sudoers_for_user,
+        "section": Sections.SYSTEM.value,
+    },
+    {
+        "number": "11",
+        "name": "Configure Moonlander keyboard",
+        "func": moonlander.setup_moonlander,
         "section": Sections.SYSTEM.value,
     },
 ]
