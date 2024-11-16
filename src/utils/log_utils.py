@@ -5,7 +5,7 @@ class Logger:
     console = Console()
 
     def success(self, msg: str):
-        self.console.print(f"[bold green]  {msg}[/bold green]")
+        self.console.print(f"[bold green]   {msg}[/bold green]")
 
     def failure(self, msg: str):
         self.console.print(f"[bold red] 󰯆  {msg}[/bold red]")
