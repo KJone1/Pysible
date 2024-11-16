@@ -1,9 +1,13 @@
 import sh
-from loguru import logger
 
 from src.utils.file_utils import untar
 from src.utils.misc_utils import create_tmp_dir, sudo_run
 from src.utils.net_utils import wget
+
+from src.utils.log_utils import Logger
+
+
+logger = Logger()
 
 
 def install_tomb(version: str = "2.11") -> None:
@@ -20,12 +24,12 @@ def install_tomb(version: str = "2.11") -> None:
 
         untar(input=LOCAL_FILENAME, output=TMP_DIR, strip=True)
 
-        sudo_run("make", "install", _cwd=TMP_DIR)
+        sudo_run("make", "install", _cwd=TMP_DIR, _out="/dev/null")
 
     except sh.ErrorReturnCode as e:
         ERROR_MSG = "Encounter an ErrorReturnCode when tried to install Tomb"
-        logger.error(f"{ERROR_MSG} -> {e}")
+        logger.failure(f"{ERROR_MSG} -> {e}")
     except Exception as e:
-        logger.error(f"Encounter an error when tried to install Tomb -> {e}")
+        logger.failure(f"Encounter an error when tried to install Tomb -> {e}")
     else:
-        logger.info(f"Installed Tomb {version}")
+        logger.success(f"Installed Tomb {version}")
