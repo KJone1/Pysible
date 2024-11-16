@@ -21,16 +21,16 @@ def clone_sddm_theme() -> None:
     try:
         git_clone(repo_url=REPO_URL, dest=DEST)
     except ErrorReturnCode as e:
-        logger.bad(f"Git clone returned a bad status code -> {e}")
+        logger.failure(f"Git clone returned a failure status code -> {e}")
         success = False
     except AttributeError:
-        logger.bad("Git not found")
+        logger.failure("Git not found")
         success = False
     except Exception as e:
-        logger.bad(f"Failed to Clone SDDM theme -> {e}")
+        logger.failure(f"Failed to Clone SDDM theme -> {e}")
         success = False
     else:
-        logger.good(f"Successfully cloned {REPO_URL} to {DEST}")
+        logger.success(f"Successfully cloned {REPO_URL} to {DEST}")
     return success
 
 
@@ -49,9 +49,9 @@ def update_sddm_theme() -> None:
                 else:
                     f.write(line)
 
-        logger.good(f"Successfully updated SDDM theme to {THEME_NAME} in {CONFIG_FILE}")
+        logger.success(f"Successfully updated SDDM theme to {THEME_NAME} in {CONFIG_FILE}")
 
     except FileNotFoundError:
-        logger.bad(f"sddm.conf configuration file not found at: {CONFIG_FILE}")
+        logger.failure(f"sddm.conf configuration file not found at: {CONFIG_FILE}")
     except Exception as e:
-        logger.bad(f"An error occurred while updating '{CONFIG_FILE}': {e}")
+        logger.failure(f"An error occurred while updating '{CONFIG_FILE}': {e}")

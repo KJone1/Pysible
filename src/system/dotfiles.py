@@ -23,16 +23,16 @@ def clone_dotfiles() -> bool:
     try:
         git_clone(repo_url=REPO_URL, dest=DEST)
     except ErrorReturnCode as e:
-        logger.bad(f"Git clone returned a bad status code -> {e}")
+        logger.failure(f"Git clone returned a failure status code -> {e}")
         success = False
     except AttributeError:
-        logger.bad("Git not found")
+        logger.failure("Git not found")
         success = False
     except Exception as e:
-        logger.bad(f"Failed to Setup dotfiles -> {e}")
+        logger.failure(f"Failed to Setup dotfiles -> {e}")
         success = False
     else:
-        logger.good(f"Successfully cloned {REPO_URL} to {DEST}")
+        logger.success(f"Successfully cloned {REPO_URL} to {DEST}")
     return success
 
 
@@ -41,6 +41,6 @@ def run_dotfiles_intall_script() -> None:
     try:
         bash(INSTALL_SCRIPT)
     except ErrorReturnCode as e:
-        logger.bad(f"Error running dotfiles install script -> {e}")
+        logger.failure(f"Error running dotfiles install script -> {e}")
     else:
-        logger.good("dotfiles installed successfully")
+        logger.success("dotfiles installed successfully")

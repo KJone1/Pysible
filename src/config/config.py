@@ -13,7 +13,7 @@ def load_env(var: str):
         config_dict = dotenv.dotenv_values(".env")
         v = config_dict.get(var)
         if v is None:
-            logger.bad(f"Missing {var} env var, Exiting...")
+            logger.failure(f"Missing {var} env var, Exiting...")
             exit(1)
     return v
 

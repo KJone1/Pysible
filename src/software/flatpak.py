@@ -26,7 +26,7 @@ def install_flatpak() -> None:
         total_packages = len(package_list)
         installed_packages = 0
 
-        logger.good(f"Starting installation of {total_packages} flatpak packages.")
+        logger.success(f"Starting installation of {total_packages} flatpak packages.")
 
         with yaspin():
 
@@ -38,15 +38,15 @@ def install_flatpak() -> None:
                 if not error:
                     installed_packages += 1
                 else:
-                    logger.bad(error)
+                    logger.failure(error)
 
             with ThreadPoolExecutor(max_workers=8) as executor:
                 executor.map(install_flatpak_packages, package_list)
 
-        logger.good(
+        logger.success(
             f"{installed_packages}/{total_packages} flatpak packages installed successfully."
         )
     except AttributeError as e:
-        logger.bad(f"Flatpak not found {e}")
+        logger.failure(f"Flatpak not found {e}")
     except Exception as e:
-        logger.bad(f"Failed to download flatpak packages -> {e}")
+        logger.failure(f"Failed to download flatpak packages -> {e}")
