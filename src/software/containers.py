@@ -55,11 +55,17 @@ def install_nerdctl(version: str = "2.0.0") -> None:
         except (sh.ErrorReturnCode, FileNotFoundError) as e:
             logger.failure(f"Failed to copy nerdctl.toml -> {e}")
         except Exception as e:
-            logger.failure(f"Caught general nerdctl error -> {e}")
+            logger.failure(f"Caught unexpected nerdctl error -> {e}")
 
 
 def install_k0s() -> None:
-    pass
+    try:
+        sh.bash("curl -sSLf https://get.k0s.sh | sudo sh")
+        sh.bash("k0s install controller --force --single")
+    except sh.ErrorReturnCode as e:
+        logger.failure(f"Failed to install k0s -> {e}")
+    except Exception as e:
+        logger.failure(f"Caught unexpected k0s error -> {e}")
 
 
 def install_k9s(version: str = "v0.32.6") -> None:
@@ -86,7 +92,7 @@ def install_k9s(version: str = "v0.32.6") -> None:
         except (OSError, ValueError) as e:
             logger.failure(f"Failed to set k9s permissions -> {e}")
         except Exception as e:
-            logger.failure(f"Caught general k9s error -> {e}")
+            logger.failure(f"Caught unexpected k9s error -> {e}")
 
 
 def install_buildkit(version: str = "v0.17.0") -> None:
