@@ -23,6 +23,7 @@ def install_dnf() -> None:
         "sway",
         "swaylock",
         "waybar",
+        "wdisplays",
         "wlogout",
         "wl-clipboard",
         "grimshot",
