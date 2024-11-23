@@ -11,6 +11,7 @@ from shutil import rmtree
 class Dotfiles:
     logger = Logger()
     DEST = f"{Consts.HOME_DIR}/DEV/dotfiles"
+    REPO_URL = "https://github.com/KJone1/dotfiles.git"
 
     def __init__(self) -> None:
         clone_ok = self.__clone_dotfiles()
@@ -21,10 +22,10 @@ class Dotfiles:
                 rmtree(self.DEST)
 
     def __clone_dotfiles(self) -> bool:
-        REPO_URL = "https://github.com/KJone1/dotfiles.git"
         success = True
+
         try:
-            git_clone(repo_url=REPO_URL, dest=self.DEST)
+            git_clone(repo_url=self.REPO_URL, dest=self.DEST)
         except ErrorReturnCode as e:
             self.logger.failure(f"Git clone returned a failure status code -> {e}")
             success = False
