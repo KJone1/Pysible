@@ -4,6 +4,7 @@ from sh import ErrorReturnCode
 
 from src.utils.log_utils import Logger
 from src.utils.net_utils import git_clone
+from shutil import rmtree
 
 
 class SddmTheme:
@@ -55,9 +56,6 @@ class SddmTheme:
                     else:
                         f.write(line)
 
-            self.logger.success(
-                f"Successfully updated SDDM theme to {theme_name} in {config_file_path}"
-            )
         except FileNotFoundError:
             self.logger.failure(
                 f"sddm.conf configuration file not found at: {config_file_path}"
@@ -65,4 +63,8 @@ class SddmTheme:
         except Exception as e:
             self.logger.failure(
                 f"An error occurred while updating '{config_file_path}': {e}"
+            )
+        else:
+            self.logger.success(
+                f"Successfully updated SDDM theme to {theme_name} in {config_file_path}"
             )
