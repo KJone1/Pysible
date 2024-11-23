@@ -73,24 +73,30 @@ tasks = [
     },
     {
         "number": "8",
+        "name": "Install k0s",
+        "func": containers.install_k0s,
+        "section": Sections.SOFTWARE.value,
+    },
+    {
+        "number": "9",
         "name": "Configure Dotfiles",
         "func": Dotfiles,
         "section": Sections.SYSTEM.value,
     },
     {
-        "number": "9",
+        "number": "10",
         "name": "Configure SDDM Theme",
         "func": SddmTheme,
         "section": Sections.SYSTEM.value,
     },
     {
-        "number": "10",
+        "number": "11",
         "name": "Configure Sudoers for User",
         "func": sudoers.setup_sudoers_for_user,
         "section": Sections.SYSTEM.value,
     },
     {
-        "number": "11",
+        "number": "12",
         "name": "Configure Moonlander keyboard",
         "func": moonlander.setup_moonlander,
         "section": Sections.SYSTEM.value,
