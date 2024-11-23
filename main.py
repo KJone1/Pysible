@@ -11,11 +11,12 @@ import src.software.containers as containers
 import src.software.dnf as dnf
 import src.software.flatpak as flatpak
 import src.software.tomb as tomb
-import src.system.dotfiles as dotfiles
+from src.system.dotfiles import Dotfiles
 import src.system.moonlander as moonlander
-import src.system.sddm as sddm
+from src.system.sddm import SddmTheme
 import src.system.sudoers as sudoers
 from src.config.config import load_config
+
 # from src.system import setup_system
 from src.utils.misc_utils import delete_tmp_dir
 
@@ -73,13 +74,13 @@ tasks = [
     {
         "number": "8",
         "name": "Configure Dotfiles",
-        "func": dotfiles.init_dotfiles,
+        "func": Dotfiles,
         "section": Sections.SYSTEM.value,
     },
     {
         "number": "9",
         "name": "Configure SDDM Theme",
-        "func": sddm.init_sddm,
+        "func": SddmTheme,
         "section": Sections.SYSTEM.value,
     },
     {
