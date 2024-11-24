@@ -1,4 +1,3 @@
-
 from .misc_utils import sudo_run
 
 
@@ -19,13 +18,12 @@ def install_package(package: str, package_manager: str = "dnf") -> str or None:
         "dnf",
     ), f"Unsupported package manager: {package_manager}"
 
-    try:
-        if package_manager == "dnf":
-            sudo_run("dnf", "-y", "install", package)
-        elif package_manager == "flatpak":
-            sudo_run("flatpak", "-y", "install", "flathub", package)
-    except Exception as e:
-        raise e from e
+    if package_manager == "dnf":
+        sudo_run("dnf", "-y", "install", package)
+    elif package_manager == "flatpak":
+        sudo_run("flatpak", "-y", "install", "flathub", package)
+
+    return package
 
 
 def setup_flatpak_repo() -> None:
