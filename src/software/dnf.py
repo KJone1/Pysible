@@ -1,9 +1,12 @@
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from loguru import logger
 from yaspin import yaspin
 
 from src.utils.package_utils import install_package
+
+from src.utils.log_utils import Logger
+
+logger = Logger()
 
 
 def install_dnf() -> None:
@@ -47,21 +50,17 @@ def install_dnf() -> None:
 
     logger.info(f"Starting installation of {total_packages} dnf packages.")
 
-    with yaspin(text="Installing ", ellipsis="..."):
-
-        def install_dnf_packages(package_name):
-            # ThreadPoolExecutor() does not take in arguments for the function
-            # so doing this hack so i can pass "dnf" as package manager
-            nonlocal installed_packages
-            error = install_package(package=package_name, package_manager="dnf")
-            if not error:
+    with ThreadPoolExecutor(max_workers=8) as executor:
+        futures = [
+            executor.submit(install_package, package=package, package_manager="dnf")
+            for package in package_list
+        ]
+        for future in as_completed(futures):
+            if future.exception() is None:
+                logger.success(f"Installed {future.result()}")
                 installed_packages += 1
             else:
-                logger.error(error)
-
-        with ThreadPoolExecutor(max_workers=8) as executor:
-            executor.map(install_dnf_packages, package_list)
-
+                logger.failure(f"Failed to install {future.exception().full_cmd}")
     logger.info(
         f"{installed_packages}/{total_packages} dnf packages installed successfully."
     )
