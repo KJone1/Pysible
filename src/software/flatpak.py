@@ -5,8 +5,6 @@ from yaspin import yaspin
 from src.utils.log_utils import Logger
 from src.utils.package_utils import install_package, setup_flatpak_repo
 
-logger = Logger()
-
 
 def install_flatpak() -> None:
     """
@@ -26,7 +24,7 @@ def install_flatpak() -> None:
         total_packages = len(package_list)
         installed_packages = 0
 
-        logger.success(f"Starting installation of {total_packages} flatpak packages.")
+        Logger.success(f"Starting installation of {total_packages} flatpak packages.")
 
         with yaspin():
 
@@ -43,10 +41,10 @@ def install_flatpak() -> None:
             with ThreadPoolExecutor(max_workers=8) as executor:
                 executor.map(install_flatpak_packages, package_list)
 
-        logger.success(
+        Logger.success(
             f"{installed_packages}/{total_packages} flatpak packages installed successfully."
         )
     except AttributeError as e:
-        logger.failure(f"Flatpak not found {e}")
+        Logger.failure(f"Flatpak not found {e}")
     except Exception as e:
-        logger.failure(f"Failed to download flatpak packages -> {e}")
+        Logger.failure(f"Failed to download flatpak packages -> {e}")

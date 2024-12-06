@@ -2,16 +2,23 @@ from rich.console import Console
 
 
 class Logger:
-    console = Console()
 
-    def success(self, msg: str):
-        self.console.print(f"[bold green]   {msg}[/bold green]")
+    def log(msg: str, icon: str, color: str):
+        console = Console()
+        console.print(f"[{color}] {icon} {msg}[/{color}]")
 
-    def failure(self, msg: str):
-        self.console.print(f"[bold red] 󰯆  {msg}[/bold red]")
+    @staticmethod
+    def success(msg: str):
+        Logger.log(msg, icon=" ", color="bold green")
 
-    def warn(self, msg: str):
-        self.console.print(f"[bold yellow]   {msg}[/bold yellow]")
+    @staticmethod
+    def failure(msg: str):
+        Logger.log(msg, icon="󰯆 ", color="bold red")
 
-    def info(self, msg: str):
-        self.console.print(f" 󱠿  {msg}", style="bold cyan")
+    @staticmethod
+    def warn(msg: str):
+        Logger.log(msg, icon=" ", color="bold yellow")
+
+    @staticmethod
+    def info(msg: str):
+        Logger.log(msg, icon="󱠿 ", color="bold cyan")

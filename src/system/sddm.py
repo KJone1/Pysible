@@ -9,7 +9,6 @@ from shutil import rmtree
 
 class SddmTheme:
 
-    logger = Logger()
     REPO_URL = "https://github.com/KJone1/sddm-dark-chocolate.git"
     DEST = "/usr/share/sddm/themes/sddm-dark-chocolate"
 
@@ -27,16 +26,16 @@ class SddmTheme:
         try:
             git_clone(repo_url=self.REPO_URL, dest=self.DEST)
         except ErrorReturnCode as e:
-            self.logger.failure(f"Git clone returned a failure status code -> {e}")
+            Logger.failure(f"Git clone returned a failure status code -> {e}")
             success = False
         except AttributeError:
-            self.logger.failure("Git not found")
+            Logger.failure("Git not found")
             success = False
         except Exception as e:
-            self.logger.failure(f"Failed to Clone SDDM theme -> {e}")
+            Logger.failure(f"Failed to Clone SDDM theme -> {e}")
             success = False
         else:
-            self.logger.success(f"Successfully cloned {self.REPO_URL} to {self.DEST}")
+            Logger.success(f"Successfully cloned {self.REPO_URL} to {self.DEST}")
         return success
 
     def __update_sddm_theme(self) -> None:
@@ -57,14 +56,14 @@ class SddmTheme:
                         f.write(line)
 
         except FileNotFoundError:
-            self.logger.failure(
+            Logger.failure(
                 f"sddm.conf configuration file not found at: {config_file_path}"
             )
         except Exception as e:
-            self.logger.failure(
+            Logger.failure(
                 f"An error occurred while updating '{config_file_path}': {e}"
             )
         else:
-            self.logger.success(
+            Logger.success(
                 f"Successfully updated SDDM theme to {theme_name} in {config_file_path}"
             )

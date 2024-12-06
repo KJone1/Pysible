@@ -5,13 +5,11 @@ from src.utils.log_utils import Logger
 from src.utils.misc_utils import create_tmp_dir, sudo_run
 from src.utils.net_utils import wget
 
-logger = Logger()
-
 
 def install_tomb(version: str = "2.11") -> None:
     TMP_DIR = "tmp/tomb"
 
-    logger.info("Starting to install Tomb...")
+    Logger.info("Starting to install Tomb...")
     try:
 
         create_tmp_dir(name="tomb")
@@ -26,8 +24,8 @@ def install_tomb(version: str = "2.11") -> None:
 
     except sh.ErrorReturnCode as e:
         ERROR_MSG = "Encounter an ErrorReturnCode when tried to install Tomb"
-        logger.failure(f"{ERROR_MSG} -> {e}")
+        Logger.failure(f"{ERROR_MSG} -> {e}")
     except Exception as e:
-        logger.failure(f"Encounter an error when tried to install Tomb -> {e}")
+        Logger.failure(f"Encounter an error when tried to install Tomb -> {e}")
     else:
-        logger.success(f"Installed Tomb {version}")
+        Logger.success(f"Installed Tomb {version}")

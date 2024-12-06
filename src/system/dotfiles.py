@@ -9,7 +9,6 @@ from shutil import rmtree
 
 
 class Dotfiles:
-    logger = Logger()
     DEST = f"{Consts.HOME_DIR}/DEV/dotfiles"
     REPO_URL = "https://github.com/KJone1/dotfiles.git"
 
@@ -27,16 +26,16 @@ class Dotfiles:
         try:
             git_clone(repo_url=self.REPO_URL, dest=self.DEST)
         except ErrorReturnCode as e:
-            self.logger.failure(f"Git clone returned a failure status code -> {e}")
+            Logger.failure(f"Git clone returned a failure status code -> {e}")
             success = False
         except AttributeError:
-            self.logger.failure("Git not found")
+            Logger.failure("Git not found")
             success = False
         except Exception as e:
-            self.logger.failure(f"Failed to Setup dotfiles -> {e}")
+            Logger.failure(f"Failed to Setup dotfiles -> {e}")
             success = False
         else:
-            self.logger.success(f"Successfully cloned {REPO_URL} to {self.DEST}")
+            Logger.success(f"Successfully cloned {REPO_URL} to {self.DEST}")
         return success
 
     def __run_dotfiles_intall_script(self) -> None:
@@ -44,6 +43,6 @@ class Dotfiles:
         try:
             bash(INSTALL_SCRIPT)
         except ErrorReturnCode as e:
-            self.logger.failure(f"Error running dotfiles install script -> {e}")
+            Logger.failure(f"Error running dotfiles install script -> {e}")
         else:
-            self.logger.success("dotfiles installed successfully")
+            Logger.success("dotfiles installed successfully")
