@@ -1,12 +1,6 @@
-from concurrent.futures import ThreadPoolExecutor, as_completed
-
-from yaspin import yaspin
-
-from src.utils.package_utils import install_package
+import src.utils.package_utils as package
 
 from src.utils.log_utils import Logger
-
-logger = Logger()
 
 
 def install_dnf() -> None:
@@ -44,23 +38,21 @@ def install_dnf() -> None:
         "zsh",
         "make",
         "steghide",
+        "kitty",
+        "alacritty",
     }
+
     total_packages = len(package_list)
-    installed_packages = 0
 
-    logger.info(f"Starting installation of {total_packages} dnf packages.")
+    Logger.info(f"Starting installation of {total_packages} dnf packages.")
 
-    with ThreadPoolExecutor(max_workers=8) as executor:
-        futures = [
-            executor.submit(install_package, package=package, package_manager="dnf")
-            for package in package_list
-        ]
-        for future in as_completed(futures):
-            if future.exception() is None:
-                logger.success(f"Installed {future.result()}")
-                installed_packages += 1
-            else:
-                logger.failure(f"Failed to install {future.exception().full_cmd}")
-    logger.info(
-        f"{installed_packages}/{total_packages} dnf packages installed successfully."
-    )
+    try:
+        installed_packages = package.install_packages_parallel(package_list, "dnf")
+
+        Logger.info(
+            f"{installed_packages}/{total_packages} dnf packages installed successfully."
+        )
+    except AttributeError as e:
+        Logger.failure(f"dnf not found {e}")
+    except Exception as e:
+        Logger.failure(f"Failed to download dnf packages -> {e}")
