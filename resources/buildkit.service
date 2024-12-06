@@ -4,7 +4,7 @@ Documentation=https://github.com/moby/buildkit
 
 [Service]
 Type=simple
-ExecStart=/usr/bin/buildkitd
+ExecStart=/usr/local/bin/buildkitd
 
 [Install]
 WantedBy=multi-user.target
