@@ -3,6 +3,7 @@ from rich.console import Console
 
 class Logger:
 
+    @staticmethod
     def log(msg: str, icon: str, color: str):
         console = Console()
         console.print(f"[{color}] {icon} {msg}[/{color}]")
