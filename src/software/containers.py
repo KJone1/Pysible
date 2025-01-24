@@ -140,8 +140,7 @@ def _get_kubernetes_version() -> str:
         response = requests.get(url)
         response.raise_for_status()
     except requests.exceptions.RequestException as e:
-        Logger.failure(f"Error fetching Kubernetes version: {e}")
-        return None
+        raise Exception(f"Error fetching Kubernetes version: {e}") from e
     else:
         version = response.text.strip()
         return version
