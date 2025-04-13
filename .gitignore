@@ -6,6 +6,9 @@ tmp
 # C extensions
 *.so
 
+.idx
+.vscode
+
 # Distribution / packaging
 .Python
 build/
