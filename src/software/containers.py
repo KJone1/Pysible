@@ -7,35 +7,36 @@ from src.utils.log_utils import Logger
 from src.utils.misc_utils import create_tmp_dir
 
 
-def install_kubectl() -> None:
-    KUBE_VER = _get_kubernetes_version()
-    KUBECTL_URL = f"https://dl.k8s.io/release/{KUBE_VER}/bin/linux/amd64/kubectl"
-    KUBECTL_DEST = "/usr/local/bin/kubectl"
+def install_kubectl(version: str) -> None:
+
+    Logger.info(f"Starting to install kubectl {version}")
 
     try:
-        Logger.info("Starting to install kubectl...")
-        net.wget(url=KUBECTL_URL, dest=KUBECTL_DEST)
+        kubectl_ver = f"https://dl.k8s.io/release/{version}/bin/linux/amd64/kubectl"
+        kubectl_dest = "/usr/local/bin/kubectl"
+        net.wget(url=kubectl_ver, dest=kubectl_dest)
+        files.set_file_permissions(kubectl_dest, "555")
+        Logger.success(f"Installed kubectl {version}")
     except Exception as e:
         Logger.failure(f"Failed to download kubectl -> {e}")
-    else:
-        files.set_file_permissions(KUBECTL_DEST, "555")
-        Logger.success(f"Installed kubectl {KUBE_VER}")
+        
 
 
 def install_nerdctl(version: str = "2.0.0") -> None:
-    NERDCTL_URL = f"https://github.com/containerd/nerdctl/releases/download/v{version}/nerdctl-{version}-linux-amd64.tar.gz"
-    NERDCTL_DEST = "/usr/local/bin/nerdctl"
+    nerdctl_url = f"https://github.com/containerd/nerdctl/releases/download/v{version}/nerdctl-{version}-linux-amd64.tar.gz"
+    nerdctl_bin_dest = "/usr/local/bin/nerdctl"
 
+    Logger.info("Starting to install nerdctl...")
     try:
-        Logger.info("Starting to install nerdctl...")
+        
         create_tmp_dir(name="nerdctl")
 
         TMP_DIR = f"{Consts.TMP_DIR}/nerdctl"
         LOCAL_TAR = f"{TMP_DIR}/nerd-{version}.tar.gz"
-        net.wget(url=NERDCTL_URL, dest=LOCAL_TAR)
+        net.wget(url=nerdctl_url, dest=LOCAL_TAR)
 
         files.untar(input=LOCAL_TAR, output=TMP_DIR, strip=False)
-        files.copy_file(source=f"{TMP_DIR}/nerdctl", dest=NERDCTL_DEST)
+        files.copy_file(source=f"{TMP_DIR}/nerdctl", dest=nerdctl_bin_dest)
 
     except Exception as e:
         Logger.failure(f"Failed to download nerdctl -> {e}")
@@ -67,8 +68,8 @@ def install_k0s() -> None:
 
 
 def install_k9s(version: str = "v0.32.6") -> None:
-    K9S_URL = f"https://github.com/derailed/k9s/releases/download/{version}/k9s_Linux_amd64.tar.gz"
-    K9S_DEST = "/usr/local/bin/k9s"
+    k9s_url = f"https://github.com/derailed/k9s/releases/download/{version}/k9s_Linux_amd64.tar.gz"
+    k9s_dest = "/usr/local/bin/k9s"
 
     try:
         Logger.info("Starting to install k9s...")
@@ -76,16 +77,16 @@ def install_k9s(version: str = "v0.32.6") -> None:
 
         TMP_DIR = f"{Consts.TMP_DIR}/k9s"
         LOCAL_TAR = f"{TMP_DIR}/k9s-{version}.tar.gz"
-        net.wget(url=K9S_URL, dest=LOCAL_TAR)
+        net.wget(url=k9s_url, dest=LOCAL_TAR)
 
         files.untar(input=LOCAL_TAR, output=TMP_DIR, strip=False)
-        files.copy_file(source=f"{TMP_DIR}/k9s", dest=K9S_DEST)
+        files.copy_file(source=f"{TMP_DIR}/k9s", dest=k9s_dest)
 
     except Exception as e:
         Logger.failure(f"Failed to download k9s -> {e}")
     else:
         try:
-            files.set_file_permissions(K9S_DEST, "555")
+            files.set_file_permissions(k9s_dest, "555")
             Logger.success(f"Installed k9s {version}")
         except (OSError, ValueError) as e:
             Logger.failure(f"Failed to set k9s permissions -> {e}")
@@ -139,8 +140,8 @@ def _get_kubernetes_version() -> str:
     try:
         response = requests.get(url)
         response.raise_for_status()
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"Error fetching Kubernetes version: {e}") from e
-    else:
         version = response.text.strip()
         return version
+    except requests.exceptions.RequestException as e:
+        raise Exception(f"Error fetching Kubernetes version: {e}") from e
+
