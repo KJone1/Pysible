@@ -1,5 +1,4 @@
 import sh
-
 import src.utils.file_utils as files
 import src.utils.net_utils as net
 import src.utils.package_utils as pkg
@@ -13,9 +12,11 @@ def install_kubectl(version: str) -> None:
     kubectl_ver = f"https://dl.k8s.io/release/{version}/bin/linux/amd64/kubectl"
     kubectl_dest = "/usr/local/bin/kubectl"
 
+    Logger.info(f"Starting to install kubectl {version}")
     try:
         net.wget(url=kubectl_ver, dest=kubectl_dest)
         files.set_file_permissions(kubectl_dest, "555")
+        Logger.success(f"Installed kubectl {version}")
     except Exception:
         raise
 
@@ -66,11 +67,14 @@ def install_k9s(version: str) -> None:
     k9s_tmp_dir_name = "k9s"
     k9s_tmp_dir_path = f"{Consts.TMP_DIR}/{k9s_tmp_dir_name}"
 
+    Logger.info(f"Starting to install k9s {version}...")
     try:
         create_tmp_dir(name=k9s_tmp_dir_name)
         local_rpm_name = f"{k9s_tmp_dir_path}/k9s-{version}.rpm"
         net.wget(url=k9s_url, dest=local_rpm_name)
         _ = pkg.install_package(local_rpm_name)
+        Logger.success(f"Installed k9s {version}")
+
     except Exception:
         raise
 

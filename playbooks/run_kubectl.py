@@ -8,11 +8,7 @@ try:
     response.raise_for_status()
     version = response.text.strip()
 
-    Logger.info(f"Starting to install kubectl {version}")
-
     containers.install_kubectl(version)
-
-    Logger.success(f"Installed kubectl {version}")
 
 except requests.exceptions.RequestException as e:
     Logger.failure(f"Error fetching Kubernetes version -> {e}")
