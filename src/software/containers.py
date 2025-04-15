@@ -79,39 +79,35 @@ def install_k9s(version: str) -> None:
         raise
 
 
-def install_buildkit(version: str = "v0.17.0") -> None:
-    URL = f"https://github.com/moby/buildkit/releases/download/{version}/buildkit-{version}.linux-amd64.tar.gz"
-    TMP_DIR = f"{Consts.TMP_DIR}/buildkit"
-    BUILDKITD_DEST = "/usr/local/bin/buildkitd"
-    BUILDCTL_DEST = "/usr/local/bin/buildctl"
+def install_buildkit(version: str) -> None:
+    url = f"https://github.com/moby/buildkit/releases/download/{version}/buildkit-{version}.linux-amd64.tar.gz"
+    tmp_dir_name = "buildkit"
+    tmp_dir_path = f"{Consts.TMP_DIR}/{tmp_dir_name}"
+    buildkitd_dest = "/usr/local/bin/buildkitd"
+    buildctl_dest = "/usr/local/bin/buildctl"
+    Logger.info("Starting to install Buildkit...")
     try:
-        Logger.info("Starting to install Buildkit...")
-        create_tmp_dir(name="buildkit")
+        create_tmp_dir(name=tmp_dir_name)
 
-        LOCAL_TAR = f"{TMP_DIR}/buildkit-{version}.tar.gz"
-        net.wget(url=URL, dest=LOCAL_TAR)
+        local_tar_path = f"{tmp_dir_path}/buildkit-{version}.tar.gz"
+        net.wget(url=url, dest=local_tar_path)
 
-        files.untar(input=LOCAL_TAR, output=TMP_DIR, strip=True)
-        files.copy(source=f"{TMP_DIR}/buildkitd", dest=BUILDKITD_DEST)
-        files.copy(source=f"{TMP_DIR}/buildctl", dest=BUILDCTL_DEST)
-
-    except Exception as e:
-        Logger.failure(f"Failed to download Buildkit -> {e}")
-    else:
-        files.set_file_permissions(BUILDKITD_DEST, "555")
-        files.set_file_permissions(BUILDCTL_DEST, "555")
-        try:
-            _ = files.copy_resource(
-                filename="buildkit.service",
-                dest="/etc/systemd/system/buildkit.service",
-                sudo=True,
-            )
-            _ = files.copy_resource(
-                filename="buildkitd.toml",
-                dest="/etc/buildkit/buildkitd.toml",
-                sudo=True,
-            )
-        except Exception as e:
-            Logger.failure(f"Failed to copy buildkit config files -> {e}")
-
+        files.untar(input=local_tar_path, output=tmp_dir_path, strip=True)
+        files.copy(source=f"{tmp_dir_path}/buildkitd", dest=buildkitd_dest)
+        files.copy(source=f"{tmp_dir_path}/buildctl", dest=buildctl_dest)
+        files.set_file_permissions(buildkitd_dest, "555")
+        files.set_file_permissions(buildctl_dest, "555")
+        _ = files.copy_resource(
+            filename="buildkit.service",
+            dest="/etc/systemd/system/buildkit.service",
+            sudo=True,
+        )
+        _ = files.copy_resource(
+            filename="buildkitd.toml",
+            dest="/etc/buildkit/buildkitd.toml",
+            sudo=True,
+        )
         Logger.success(f"Installed buildkit {version}")
+
+    except Exception:
+        raise

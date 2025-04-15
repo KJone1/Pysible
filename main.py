@@ -45,7 +45,7 @@ tasks = [
     {
         "number": "3",
         "name": "Install Tomb",
-        "func": tomb.install_tomb,
+        "func": "run_tomb.py",
         "section": Sections.SOFTWARE.value,
     },
     {
@@ -57,7 +57,7 @@ tasks = [
     {
         "number": "5",
         "name": "Install Buildkit",
-        "func": containers.install_buildkit,
+        "func": "run_buildkit.py",
         "section": Sections.SOFTWARE.value,
     },
     {
