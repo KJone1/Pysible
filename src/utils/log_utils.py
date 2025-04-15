@@ -22,4 +22,4 @@ class Logger:
 
     @staticmethod
     def info(msg: str):
-        Logger.log(msg, icon="󱠿 ", color="bold cyan")
+        Logger.log(msg, icon="", color="bold cyan")
