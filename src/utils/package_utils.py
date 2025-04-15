@@ -29,7 +29,9 @@ def install_package(package: str, package_manager: str = "dnf") -> str or None:
     return package
 
 
-def install_packages_parallel(package_list, package_manager: str, max_workers=8):
+def install_packages_parallel(
+    package_list: set[str], package_manager: str, max_workers: int = 8
+) -> None:
     """
     Installs a list of packages concurrently using the specified package manager.
     """

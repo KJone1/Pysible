@@ -8,8 +8,9 @@ from rich.prompt import Prompt
 from rich.table import Table
 
 import src.software.containers as containers
-import src.software.dnf as dnf
-import src.software.flatpak as flatpak
+
+# import src.software.dnf as dnf
+# import src.software.flatpak as flatpak
 import src.software.tomb as tomb
 from src.system.dotfiles import Dotfiles
 import src.system.moonlander as moonlander
@@ -18,7 +19,7 @@ import src.system.sudoers as sudoers
 from src.config.config import load_config
 
 # from src.system import setup_system
-from src.utils.misc_utils import delete_tmp_dir
+import src.utils.misc_utils as misc
 
 console = Console()
 
@@ -32,13 +33,13 @@ tasks = [
     {
         "number": "1",
         "name": "Install DNF Packages",
-        "func": dnf.install_dnf,
+        "func": "run_dnf.py",
         "section": Sections.SOFTWARE.value,
     },
     {
         "number": "2",
         "name": "Install Flatpak Packages",
-        "func": flatpak.install_flatpak,
+        "func": "run_flatpak.py",
         "section": Sections.SOFTWARE.value,
     },
     {
@@ -194,7 +195,12 @@ def main():
                     mod.strip() for mod in choice.replace(",", " ").split()
                 ]
                 if all(mod in tasks_mapping for mod in selected_modules):
-                    run_modules(selected_modules)
+                    # run_modules(selected_modules)
+                    for mod_number in selected_modules:
+                        task = tasks_mapping.get(mod_number)
+                        if task.get("func"):
+                            playbook = task.get("func")
+                            _ = misc.execute_playbook(playbook)
                 else:
                     console.print(
                         "[bold red]Invalid Input! Please choose valid options.[/bold red]"
@@ -203,7 +209,7 @@ def main():
 
 
 def cleanup():
-    delete_tmp_dir()
+    misc.delete_tmp_dir()
 
 
 if __name__ == "__main__":
