@@ -23,7 +23,7 @@ def wget(url: str, dest: str) -> None:
     except requests.HTTPError as e:
         raise requests.HTTPError(f"HTTP error occurred: {e}") from e
     except Exception as e:
-        raise RuntimeError(f"An unexpected error occurred: {e}") from e
+        raise RuntimeError(f"wget error occurred while downloading {url} : {e}") from e
 
 
 def git_clone(repo_url, dest) -> None:
