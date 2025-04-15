@@ -1,19 +1,19 @@
 from loguru import logger
-from sh import ErrorReturnCode, visudo
+import sh
 
 from src.config.constants import Consts
 from src.utils.file_utils import copy_resource
 
 
 def setup_sudoers_for_user() -> None:
-    SUDOERS_FILE_NAME = f"{Consts.RESOURCES_DIR}/kj"
-    SUDOERS_PATH = "/etc/sudoers.d/kj"
+    sudoers_file_name = f"{Consts.RESOURCES_DIR}/kj"
+    sudoers_path = "/etc/sudoers.d/kj"
     try:
-        visudo("-c", "-f", SUDOERS_FILE_NAME)
-        copy_resource(filename=SUDOERS_FILE_NAME, dest=SUDOERS_PATH, sudo=True)
-    except ErrorReturnCode as e:
+        sh.visudo("-c", "-f", sudoers_file_name)
+        _ = copy_resource(filename=sudoers_file_name, dest=sudoers_path, sudo=True)
+    except sh.ErrorReturnCode as e:
         logger.error(f"Error validating sudoers file: {e}")
     except FileNotFoundError as e:
         logger.error(e)
     else:
-        logger.info(f"Copied {SUDOERS_FILE_NAME} to {SUDOERS_PATH}")
+        logger.info(f"Copied {sudoers_file_name} to {sudoers_path}")
