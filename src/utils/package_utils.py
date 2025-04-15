@@ -3,28 +3,23 @@ from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from src.utils.log_utils import Logger
 
+import sh
 
-def install_package(package: str, package_manager: str = "dnf") -> str or None:
-    """
-    Installs a single package using a package manager
-    Args:
-      package: The package to download.
-      package_manager: Which package manager to use.
+from src.config.constants import Consts
 
-    Returns:
-      A tuple containing:
-        - A boolean indicating success (True for OK, False for error).
-        - Error or None if no error occurred.
-    """
+
+def install_package(package: str, package_manager: str = "dnf") -> str:
     assert package_manager in (
         "flatpak",
         "dnf",
     ), f"Unsupported package manager: {package_manager}"
 
     if package_manager == "dnf":
-        sudo_run("dnf", "-y", "install", package)
+        args = ["install", "-y", package]
+        sudo_run("dnf", *args)
     elif package_manager == "flatpak":
-        sudo_run("flatpak", "-y", "install", "flathub", package)
+        args = ["install", "-y", "flathub", package]
+        sudo_run("flatpak", *args)
 
     return package
 
