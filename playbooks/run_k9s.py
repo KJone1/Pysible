@@ -3,7 +3,7 @@ from src.utils.log_utils import Logger
 import sh
 
 try:
-    containers.install_k9s("v0.50.3")
+    containers.install_k9s(version="v0.50.3")
 
 except (OSError, ValueError) as e:
     Logger.failure(f"Failed to set k9s permissions -> {e}")

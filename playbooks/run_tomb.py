@@ -4,8 +4,7 @@ import sh
 
 
 try:
-    version: str = "2.11"
-    tomb.install_tomb(version=version)
+    tomb.install_tomb(version="2.11")
 except sh.ErrorReturnCode as e:
     error = "Encounter an ErrorReturnCode when tried to install Tomb"
     Logger.failure(f"{error} -> {e}")
