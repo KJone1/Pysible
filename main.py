@@ -1,24 +1,16 @@
 import os
 from collections import defaultdict
 from enum import Enum
-
 from rich.box import SIMPLE_HEAVY
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.table import Table
-
 import src.software.containers as containers
-
-# import src.software.dnf as dnf
-# import src.software.flatpak as flatpak
-import src.software.tomb as tomb
 from src.system.dotfiles import Dotfiles
 import src.system.moonlander as moonlander
 from src.system.sddm import SddmTheme
 import src.system.sudoers as sudoers
 from src.config.config import load_config
-
-# from src.system import setup_system
 import src.utils.misc_utils as misc
 
 console = Console()
