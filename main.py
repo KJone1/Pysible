@@ -69,7 +69,7 @@ tasks = [
     {
         "number": "7",
         "name": "Install k9s",
-        "func": containers.install_k9s,
+        "func": "run_k9s.py",
         "section": Sections.SOFTWARE.value,
     },
     {

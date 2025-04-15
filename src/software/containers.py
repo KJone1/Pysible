@@ -2,6 +2,7 @@ import sh
 
 import src.utils.file_utils as files
 import src.utils.net_utils as net
+import src.utils.package_utils as pkg
 from src.config.constants import Consts
 from src.utils.log_utils import Logger
 from src.utils.misc_utils import create_tmp_dir
@@ -60,27 +61,18 @@ def install_k0s() -> None:
         Logger.failure(f"Caught unexpected k0s error -> {e}")
 
 
-def install_k9s(version: str = "v0.32.6") -> None:
-    k9s_url = f"https://github.com/derailed/k9s/releases/download/{version}/k9s_Linux_amd64.tar.gz"
-    k9s_dest = "/usr/local/bin/k9s"
-    Logger.info("Starting to install k9s...")
+def install_k9s(version: str) -> None:
+    k9s_url = f"https://github.com/derailed/k9s/releases/download/{version}/k9s_Linux_amd64.rpm"
+    k9s_tmp_dir_name = "k9s"
+    k9s_tmp_dir_path = f"{Consts.TMP_DIR}/{k9s_tmp_dir_name}"
 
     try:
-        create_tmp_dir(name="k9s")
-
-        tmp_dir = f"{Consts.TMP_DIR}/k9s"
-        local_tar_name = f"{tmp_dir}/k9s-{version}.tar.gz"
-        net.wget(url=k9s_url, dest=local_tar_name)
-
-        files.untar(input=local_tar_name, output=tmp_dir, strip=False)
-        files.copy(source=f"{tmp_dir}/k9s", dest=k9s_dest)
-        files.set_file_permissions(k9s_dest, "555")
-        Logger.success(f"Installed k9s {version}")
-
-    except (OSError, ValueError) as e:
-        Logger.failure(f"Failed to set k9s permissions -> {e}")
-    except Exception as e:
-        Logger.failure(f"Caught unexpected k9s error -> {e}")
+        create_tmp_dir(name=k9s_tmp_dir_name)
+        local_rpm_name = f"{k9s_tmp_dir_path}/k9s-{version}.rpm"
+        net.wget(url=k9s_url, dest=local_rpm_name)
+        _ = pkg.install_package(local_rpm_name)
+    except Exception:
+        raise
 
 
 def install_buildkit(version: str = "v0.17.0") -> None:
