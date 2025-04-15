@@ -20,6 +20,6 @@ def install(package_manager: str, package_list: set[str]) -> None:
             f"{installed_packages}/{total_packages} {package_manager} packages installed successfully."
         )
     except AttributeError as e:
-        Logger.failure(f"dnf not found {e}")
+        Logger.failure(f"{package_manager} not found {e}")
     except Exception as e:
-        Logger.failure(f"Failed to download dnf packages -> {e}")
+        Logger.failure(f"Failed to download {package_manager} packages -> {e}")
