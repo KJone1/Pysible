@@ -3,10 +3,10 @@ from src.utils.log_utils import Logger
 
 
 def setup_moonlander() -> None:
-    UDEV_RULES = "50-zsa.rules"
-    RULES_DIR = "/etc/udev/rules.d/"
+    udev_rules = "50-zsa.rules"
+    rules_dir = "/etc/udev/rules.d/"
     try:
-        _ = files.copy_resource(filename=UDEV_RULES, dest=RULES_DIR)
-        Logger.success(f"Copied {UDEV_RULES} to {RULES_DIR}")
+        _ = files.copy_resource(filename=udev_rules, dest=rules_dir)
+        Logger.success(f"Copied {udev_rules} to {rules_dir}")
     except Exception as e:
-        Logger.failure(f"Failed to copy {UDEV_RULES} -> {e}")
+        Logger.failure(f"Failed to copy {udev_rules} -> {e}")
