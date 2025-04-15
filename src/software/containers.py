@@ -30,33 +30,29 @@ def install_nerdctl(version: str = "2.0.0") -> None:
 
         create_tmp_dir(name="nerdctl")
 
-        TMP_DIR = f"{Consts.TMP_DIR}/nerdctl"
-        LOCAL_TAR = f"{TMP_DIR}/nerd-{version}.tar.gz"
-        net.wget(url=nerdctl_url, dest=LOCAL_TAR)
+        tmp_dir = f"{Consts.TMP_DIR}/nerdctl"
+        local_tar_name = f"{tmp_dir}/nerd-{version}.tar.gz"
+        net.wget(url=nerdctl_url, dest=local_tar_name)
 
-        files.untar(input=LOCAL_TAR, output=TMP_DIR, strip=False)
-        files.copy(source=f"{TMP_DIR}/nerdctl", dest=nerdctl_bin_dest)
-
+        files.untar(input=local_tar_name, output=tmp_dir, strip=False)
+        files.copy(source=f"{tmp_dir}/nerdctl", dest=nerdctl_bin_dest)
+        _ = files.copy_resource(
+            filename="nerdctl.toml",
+            dest="/etc/nerdctl/nerdctl.toml",
+            sudo=True,
+        )
+        files.set_file_permissions(nerdctl_bin_dest, "555")
+        Logger.success(f"Installed nerdctl {version}")
+    except (OSError, ValueError) as e:
+        Logger.failure(f"Failed to set nerdctl permissions -> {e}")
+    except (sh.ErrorReturnCode, FileNotFoundError) as e:
+        Logger.failure(f"Failed to copy nerdctl.toml -> {e}")
     except Exception as e:
-        Logger.failure(f"Failed to download nerdctl -> {e}")
-    else:
-        try:
-            files.copy_resource(
-                filename="nerdctl.toml",
-                dest="/etc/nerdctl/nerdctl.toml",
-                sudo=True,
-            )
-            files.set_file_permissions(NERDCTL_DEST, "555")
-            Logger.success(f"Installed nerdctl {version}")
-        except (OSError, ValueError) as e:
-            Logger.failure(f"Failed to set nerdctl permissions -> {e}")
-        except (sh.ErrorReturnCode, FileNotFoundError) as e:
-            Logger.failure(f"Failed to copy nerdctl.toml -> {e}")
-        except Exception as e:
-            Logger.failure(f"Caught unexpected nerdctl error -> {e}")
+        Logger.failure(f"Caught unexpected nerdctl error -> {e}")
 
 
 def install_k0s() -> None:
+    Logger.info("Starting to install k0s...")
     try:
         sh.bash("curl -sSLf https://get.k0s.sh | sudo sh")
         sh.bash("k0s install controller --force --single")
@@ -69,28 +65,24 @@ def install_k0s() -> None:
 def install_k9s(version: str = "v0.32.6") -> None:
     k9s_url = f"https://github.com/derailed/k9s/releases/download/{version}/k9s_Linux_amd64.tar.gz"
     k9s_dest = "/usr/local/bin/k9s"
+    Logger.info("Starting to install k9s...")
 
     try:
-        Logger.info("Starting to install k9s...")
         create_tmp_dir(name="k9s")
 
-        TMP_DIR = f"{Consts.TMP_DIR}/k9s"
-        LOCAL_TAR = f"{TMP_DIR}/k9s-{version}.tar.gz"
-        net.wget(url=k9s_url, dest=LOCAL_TAR)
+        tmp_dir = f"{Consts.TMP_DIR}/k9s"
+        local_tar_name = f"{tmp_dir}/k9s-{version}.tar.gz"
+        net.wget(url=k9s_url, dest=local_tar_name)
 
-        files.untar(input=LOCAL_TAR, output=TMP_DIR, strip=False)
-        files.copy(source=f"{TMP_DIR}/k9s", dest=k9s_dest)
+        files.untar(input=local_tar_name, output=tmp_dir, strip=False)
+        files.copy(source=f"{tmp_dir}/k9s", dest=k9s_dest)
+        files.set_file_permissions(k9s_dest, "555")
+        Logger.success(f"Installed k9s {version}")
 
+    except (OSError, ValueError) as e:
+        Logger.failure(f"Failed to set k9s permissions -> {e}")
     except Exception as e:
-        Logger.failure(f"Failed to download k9s -> {e}")
-    else:
-        try:
-            files.set_file_permissions(k9s_dest, "555")
-            Logger.success(f"Installed k9s {version}")
-        except (OSError, ValueError) as e:
-            Logger.failure(f"Failed to set k9s permissions -> {e}")
-        except Exception as e:
-            Logger.failure(f"Caught unexpected k9s error -> {e}")
+        Logger.failure(f"Caught unexpected k9s error -> {e}")
 
 
 def install_buildkit(version: str = "v0.17.0") -> None:
@@ -115,12 +107,12 @@ def install_buildkit(version: str = "v0.17.0") -> None:
         files.set_file_permissions(BUILDKITD_DEST, "555")
         files.set_file_permissions(BUILDCTL_DEST, "555")
         try:
-            files.copy_resource(
+            _ = files.copy_resource(
                 filename="buildkit.service",
                 dest="/etc/systemd/system/buildkit.service",
                 sudo=True,
             )
-            files.copy_resource(
+            _ = files.copy_resource(
                 filename="buildkitd.toml",
                 dest="/etc/buildkit/buildkitd.toml",
                 sudo=True,
