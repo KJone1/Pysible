@@ -51,7 +51,7 @@ tasks = [
     {
         "number": "4",
         "name": "Install Kubectl",
-        "func": containers.install_kubectl,
+        "func": "run_kubectl.py",
         "section": Sections.SOFTWARE.value,
     },
     {

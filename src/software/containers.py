@@ -11,14 +11,12 @@ def install_kubectl(version: str) -> None:
 
     kubectl_ver = f"https://dl.k8s.io/release/{version}/bin/linux/amd64/kubectl"
     kubectl_dest = "/usr/local/bin/kubectl"
-    Logger.info(f"Starting to install kubectl {version}")
 
     try:
         net.wget(url=kubectl_ver, dest=kubectl_dest)
         files.set_file_permissions(kubectl_dest, "555")
-        Logger.success(f"Installed kubectl {version}")
-    except Exception as e:
-        Logger.failure(f"Failed to download kubectl -> {e}")
+    except Exception:
+        raise
 
 
 def install_nerdctl(version: str = "2.0.0") -> None:
@@ -48,7 +46,7 @@ def install_nerdctl(version: str = "2.0.0") -> None:
     except (sh.ErrorReturnCode, FileNotFoundError) as e:
         Logger.failure(f"Failed to copy nerdctl.toml -> {e}")
     except Exception as e:
-        Logger.failure(f"Caught unexpected nerdctl error -> {e}")
+        Logger.failure(f"caught unexpected nerdctl error -> {e}")
 
 
 def install_k0s() -> None:
@@ -121,17 +119,3 @@ def install_buildkit(version: str = "v0.17.0") -> None:
             Logger.failure(f"Failed to copy buildkit config files -> {e}")
 
         Logger.success(f"Installed buildkit {version}")
-
-
-def _get_kubernetes_version() -> str:
-    """Fetches the latest stable Kubernetes version."""
-    import requests
-
-    url = "https://dl.k8s.io/release/stable.txt"
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        version = response.text.strip()
-        return version
-    except requests.exceptions.RequestException as e:
-        raise Exception(f"Error fetching Kubernetes version: {e}") from e
