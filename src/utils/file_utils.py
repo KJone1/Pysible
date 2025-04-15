@@ -1,5 +1,4 @@
 import os
-import shutil
 import tarfile
 
 import sh
@@ -10,7 +9,7 @@ from src.config.constants import Consts
 from .misc_utils import sudo_run
 
 
-def copy_resource(filename: str, dest: str, sudo=False) -> str:
+def copy_resource(filename: str, dest: str, sudo: bool = False) -> str:
     """
     Copies a file from the 'resources' directory to a destination
 
@@ -33,7 +32,7 @@ def copy_resource(filename: str, dest: str, sudo=False) -> str:
     try:
         destination_dir = os.path.dirname(dest)
         if not os.path.exists(destination_dir):
-            os.makedirs(destination_dir)
+            sudo_run("mkdir", "-p", destination_dir)
 
         if sudo:
             sudo_run("cp", source_path, dest)
@@ -62,7 +61,7 @@ def untar(input: str, output: str, strip: bool = False) -> None:
         raise e
 
 
-def set_file_permissions(file_path, permission):
+def set_file_permissions(file_path: str, permission: str) -> None:
     """
     Sets the permissions of a file.
 
@@ -80,14 +79,7 @@ def set_file_permissions(file_path, permission):
         raise OSError(f"Error changing permissions of {file_path} -> {e}") from e
 
 
-def copy_file(source, dest):
-    """
-    Copies a file from one location to another.
-
-    Args:
-      source_path: The file you want to copy.
-      destination_path: where you want to copy the file.
-    """
+def copy(source: str, dest: str) -> None:
     try:
         destination_dir = os.path.dirname(dest)
 

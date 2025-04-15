@@ -9,17 +9,16 @@ from src.utils.misc_utils import create_tmp_dir
 
 def install_kubectl(version: str) -> None:
 
+    kubectl_ver = f"https://dl.k8s.io/release/{version}/bin/linux/amd64/kubectl"
+    kubectl_dest = "/usr/local/bin/kubectl"
     Logger.info(f"Starting to install kubectl {version}")
 
     try:
-        kubectl_ver = f"https://dl.k8s.io/release/{version}/bin/linux/amd64/kubectl"
-        kubectl_dest = "/usr/local/bin/kubectl"
         net.wget(url=kubectl_ver, dest=kubectl_dest)
         files.set_file_permissions(kubectl_dest, "555")
         Logger.success(f"Installed kubectl {version}")
     except Exception as e:
         Logger.failure(f"Failed to download kubectl -> {e}")
-        
 
 
 def install_nerdctl(version: str = "2.0.0") -> None:
@@ -28,7 +27,7 @@ def install_nerdctl(version: str = "2.0.0") -> None:
 
     Logger.info("Starting to install nerdctl...")
     try:
-        
+
         create_tmp_dir(name="nerdctl")
 
         TMP_DIR = f"{Consts.TMP_DIR}/nerdctl"
@@ -36,7 +35,7 @@ def install_nerdctl(version: str = "2.0.0") -> None:
         net.wget(url=nerdctl_url, dest=LOCAL_TAR)
 
         files.untar(input=LOCAL_TAR, output=TMP_DIR, strip=False)
-        files.copy_file(source=f"{TMP_DIR}/nerdctl", dest=nerdctl_bin_dest)
+        files.copy(source=f"{TMP_DIR}/nerdctl", dest=nerdctl_bin_dest)
 
     except Exception as e:
         Logger.failure(f"Failed to download nerdctl -> {e}")
@@ -80,7 +79,7 @@ def install_k9s(version: str = "v0.32.6") -> None:
         net.wget(url=k9s_url, dest=LOCAL_TAR)
 
         files.untar(input=LOCAL_TAR, output=TMP_DIR, strip=False)
-        files.copy_file(source=f"{TMP_DIR}/k9s", dest=k9s_dest)
+        files.copy(source=f"{TMP_DIR}/k9s", dest=k9s_dest)
 
     except Exception as e:
         Logger.failure(f"Failed to download k9s -> {e}")
@@ -107,8 +106,8 @@ def install_buildkit(version: str = "v0.17.0") -> None:
         net.wget(url=URL, dest=LOCAL_TAR)
 
         files.untar(input=LOCAL_TAR, output=TMP_DIR, strip=True)
-        files.copy_file(source=f"{TMP_DIR}/buildkitd", dest=BUILDKITD_DEST)
-        files.copy_file(source=f"{TMP_DIR}/buildctl", dest=BUILDCTL_DEST)
+        files.copy(source=f"{TMP_DIR}/buildkitd", dest=BUILDKITD_DEST)
+        files.copy(source=f"{TMP_DIR}/buildctl", dest=BUILDCTL_DEST)
 
     except Exception as e:
         Logger.failure(f"Failed to download Buildkit -> {e}")
@@ -144,4 +143,3 @@ def _get_kubernetes_version() -> str:
         return version
     except requests.exceptions.RequestException as e:
         raise Exception(f"Error fetching Kubernetes version: {e}") from e
-
