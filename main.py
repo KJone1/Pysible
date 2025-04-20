@@ -6,7 +6,6 @@ from rich.console import Console
 from rich.prompt import Prompt
 from rich.table import Table
 import src.software.containers as containers
-from src.system.dotfiles import Dotfiles
 import src.system.moonlander as moonlander
 from src.system.sddm import SddmTheme
 import src.system.sudoers as sudoers
@@ -73,7 +72,7 @@ tasks = [
     {
         "number": "9",
         "name": "Configure Dotfiles",
-        "func": Dotfiles,
+        "func": "run_dotfiles.py",
         "section": Sections.SYSTEM.value,
     },
     {
