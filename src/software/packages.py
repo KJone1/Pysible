@@ -5,11 +5,9 @@ from src.utils.log_utils import Logger
 
 def install(package_manager: str, package_list: set[str]) -> None:
 
-    total_packages = len(package_list)
+    package_count = len(package_list)
 
-    Logger.info(
-        f"Starting installation of {total_packages} {package_manager} packages."
-    )
+    Logger.info(f"Starting installation of {package_count} {package_manager} packages.")
 
     try:
         installed_packages = package.install_packages_parallel(
@@ -17,7 +15,7 @@ def install(package_manager: str, package_list: set[str]) -> None:
         )
 
         Logger.info(
-            f"{installed_packages}/{total_packages} {package_manager} packages installed successfully."
+            f"{installed_packages}/{package_count} {package_manager} packages installed successfully."
         )
     except AttributeError as e:
         Logger.failure(f"{package_manager} not found {e}")
