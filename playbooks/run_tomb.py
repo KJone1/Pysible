@@ -1,5 +1,5 @@
-import src.software.tomb as tomb
-from src.utils.log_utils import Logger
+import pysible.software.tomb as tomb
+from pysible.utils.log_utils import Logger
 import sh
 
 

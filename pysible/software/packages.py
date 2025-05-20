@@ -1,6 +1,6 @@
-import src.utils.package_utils as package
+import pysible.utils.package_utils as package
 
-from src.utils.log_utils import Logger
+from pysible.utils.log_utils import Logger
 
 
 def install(package_manager: str, package_list: set[str]) -> None:

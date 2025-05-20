@@ -1,5 +1,5 @@
-import src.software.containers as containers
-from src.utils.log_utils import Logger
+import pysible.software.containers as containers
+from pysible.utils.log_utils import Logger
 import sh
 
 try:

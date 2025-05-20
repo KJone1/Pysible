@@ -1,7 +1,7 @@
 from os import path
-from src.utils.log_utils import Logger
-from src.utils.net_utils import git_clone
-import src.exceptions.dotfiles as exceptions
+from pysible.utils.log_utils import Logger
+from pysible.utils.net_utils import git_clone
+import pysible.exceptions.dotfiles as exceptions
 import sh
 
 

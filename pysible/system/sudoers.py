@@ -1,8 +1,8 @@
 from loguru import logger
 import sh
 
-from src.config.constants import Consts
-from src.utils.file_utils import copy_resource
+from pysible.config.constants import Consts
+from pysible.utils.file_utils import copy_resource
 
 
 def setup_sudoers_for_user(sudoers_file_name: str, sudoers_path: str) -> None:

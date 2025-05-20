@@ -1,8 +1,8 @@
-from src.utils.file_utils import untar
-from src.utils.misc_utils import create_tmp_dir, sudo_run
-from src.utils.net_utils import wget
-from src.config.constants import Consts
-from src.utils.log_utils import Logger
+from pysible.utils.file_utils import untar
+from pysible.utils.misc_utils import create_tmp_dir, sudo_run
+from pysible.utils.net_utils import wget
+from pysible.config.constants import Consts
+from pysible.utils.log_utils import Logger
 
 
 def install_tomb(version: str) -> None:

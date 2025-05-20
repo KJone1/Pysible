@@ -2,7 +2,7 @@ import os
 from dataclasses import dataclass
 from pathlib import Path
 
-import src.config.config as config
+import pysible.config.config as config
 
 
 @dataclass(frozen=True)

@@ -1,5 +1,5 @@
-import src.utils.file_utils as files
-from src.utils.log_utils import Logger
+import pysible.utils.file_utils as files
+from pysible.utils.log_utils import Logger
 
 
 def setup_moonlander() -> None:

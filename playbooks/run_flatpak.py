@@ -1,5 +1,5 @@
-import src.software.packages as packages
-import src.utils.package_utils as pkg_utils
+import pysible.software.packages as packages
+import pysible.utils.package_utils as pkg_utils
 
 
 package_list = {

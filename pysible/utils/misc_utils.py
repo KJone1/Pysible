@@ -6,7 +6,7 @@ from shutil import rmtree
 
 import sh
 
-from src.config.constants import Consts
+from pysible.config.constants import Consts
 
 
 def create_tmp_dir(name: str) -> None:

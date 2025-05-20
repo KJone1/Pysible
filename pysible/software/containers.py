@@ -1,10 +1,10 @@
 import sh
-import src.utils.file_utils as files
-import src.utils.net_utils as net
-import src.utils.package_utils as pkg
-from src.config.constants import Consts
-from src.utils.log_utils import Logger
-from src.utils.misc_utils import create_tmp_dir
+import pysible.utils.file_utils as files
+import pysible.utils.net_utils as net
+import pysible.utils.package_utils as pkg
+from pysible.config.constants import Consts
+from pysible.utils.log_utils import Logger
+from pysible.utils.misc_utils import create_tmp_dir
 
 
 def install_kubectl(version: str) -> None:

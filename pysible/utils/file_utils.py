@@ -4,7 +4,7 @@ import tarfile
 import sh
 from loguru import logger
 
-from src.config.constants import Consts
+from pysible.config.constants import Consts
 
 from .misc_utils import sudo_run
 

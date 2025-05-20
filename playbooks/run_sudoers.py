@@ -1,7 +1,7 @@
-import src.system.sudoers as sudoers
+import pysible.system.sudoers as sudoers
 import sh
-from src.utils.log_utils import Logger
-from src.config.constants import Consts
+from pysible.utils.log_utils import Logger
+from pysible.config.constants import Consts
 
 sudoers_file_name = f"{Consts.RESOURCES_DIR}/kj"
 sudoers_path = "/etc/sudoers.d/kj"

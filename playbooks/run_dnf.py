@@ -1,4 +1,4 @@
-import src.software.packages as packages
+import pysible.software.packages as packages
 
 
 package_list = {

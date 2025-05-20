@@ -2,7 +2,7 @@ from os import getenv
 
 import dotenv
 
-from src.utils.log_utils import Logger
+from pysible.utils.log_utils import Logger
 
 
 def load_env(var: str):

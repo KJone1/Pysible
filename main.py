@@ -5,12 +5,12 @@ from rich.box import SIMPLE_HEAVY
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.table import Table
-import src.software.containers as containers
-import src.system.moonlander as moonlander
-from src.system.sddm import SddmTheme
-import src.system.sudoers as sudoers
-from src.config.config import load_config
-import src.utils.misc_utils as misc
+import pysible.software.containers as containers
+import pysible.system.moonlander as moonlander
+from pysible.system.sddm import SddmTheme
+import pysible.system.sudoers as sudoers
+from pysible.config.config import load_config
+import pysible.utils.misc_utils as misc
 
 console = Console()
 

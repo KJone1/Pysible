@@ -1,9 +1,9 @@
-import src.software.dotfiles as dotfiles
-import src.exceptions.dotfiles
+import pysible.software.dotfiles as dotfiles
+import pysible.exceptions.dotfiles
 import sh
 
-from src.utils.log_utils import Logger
-from src.config.constants import Consts
+from pysible.utils.log_utils import Logger
+from pysible.config.constants import Consts
 
 dotfile_dir = f"{Consts.HOME_DIR}/DEV/dotfiles"
 repo_url = "https://github.com/KJone1/dotfiles.git"
@@ -15,7 +15,7 @@ try:
 
 except sh.ErrorReturnCode as e:
     Logger.failure(f"Git clone returned a failure status code -> {e}")
-except src.exceptions.dotfiles.DotfilesInstallError as e:
+except pysible.exceptions.dotfiles.DotfilesInstallError as e:
     Logger.failure(f"Error running dotfiles install script -> {e}")
 except AttributeError as e:
     Logger.failure(f"Git not found -> {e}")

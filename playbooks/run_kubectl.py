@@ -1,6 +1,6 @@
-import src.software.containers as containers
+import pysible.software.containers as containers
 import requests
-from src.utils.log_utils import Logger
+from pysible.utils.log_utils import Logger
 
 version_url = "https://dl.k8s.io/release/stable.txt"
 try:

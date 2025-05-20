@@ -1,11 +1,11 @@
 from .misc_utils import sudo_run
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
-from src.utils.log_utils import Logger
+from pysible.utils.log_utils import Logger
 
 import sh
 
-from src.config.constants import Consts
+from pysible.config.constants import Consts
 
 
 def install_package(package: str, package_manager: str = "dnf") -> str:
