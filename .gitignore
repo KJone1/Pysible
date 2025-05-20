@@ -8,6 +8,7 @@ tmp
 
 .idx
 .vscode
+.idea
 
 # Distribution / packaging
 .Python
