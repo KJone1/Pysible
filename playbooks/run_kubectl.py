@@ -13,4 +13,4 @@ try:
 except requests.exceptions.RequestException as e:
     Logger.failure(f"Error fetching Kubernetes version -> {e}")
 except Exception as e:
-    Logger.failure(f"Caught unexpected error while intalling kubectl -> {e}")
+    Logger.failure(f"Caught unexpected error while installing kubectl -> {e}")
