@@ -10,7 +10,7 @@ def clone_dotfiles(repo_url: str, dest: str) -> None:
     Logger.info(f"Successfully cloned {repo_url} to {dest}")
 
 
-def run_dotfiles_intall_script(dotfiles_repo_path: str) -> None:
+def run_dotfiles_install_script(dotfiles_repo_path: str) -> None:
     install_script_path = path.join(dotfiles_repo_path, "install.sh")
     bash = sh.Command("bash")
     try:

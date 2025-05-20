@@ -18,7 +18,6 @@ class Task:
         self.params: dict[str, str] | None = params if params is not None else {}
 
     def execute(self) -> None:
-        Logger.info(f"Starting task: '{self.name}' ({self.number})")
         try:
             self.action_function(**self.params)
             Logger.success(f"Task '{self.name}' completed successfully.")

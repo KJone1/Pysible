@@ -6,10 +6,11 @@ from rich.console import Console
 from rich.prompt import Prompt
 from rich.table import Table
 import pysible.software.containers as containers
-import pysible.system.moonlander as moonlander
+import pysible.modules.moonlander as moonlander
+from pysible.core.app import PysibleApp
 from pysible.system.sddm import SddmTheme
-import pysible.system.sudoers as sudoers
 import pysible.utils.misc_utils as misc
+from pysible.utils.log_utils import Logger
 
 console = Console()
 
@@ -81,12 +82,6 @@ tasks = [
         "section": Sections.SYSTEM.value,
     },
     {
-        "number": "11",
-        "name": "Configure Sudoers for User",
-        "func": sudoers.setup_sudoers_for_user,
-        "section": Sections.SYSTEM.value,
-    },
-    {
         "number": "12",
         "name": "Configure Moonlander keyboard",
         "func": moonlander.setup_moonlander,
@@ -108,105 +103,22 @@ def run_modules(selected_modules):
             console.print(f"[!] Invalid module number: {mod_number}", style="bold red")
 
 
-def display_table():
-    sections = [section.value for section in Sections]
-    table = Table(
-        box=SIMPLE_HEAVY,
-        expand=False,
-        caption="[bold red]" + "-" * 15 + " 00. FULL RUN " + "-" * 15 + "[/bold red]",
-        caption_justify="center",
-    )
-    table.add_column(Sections.SYSTEM.value, justify="full", style="green", no_wrap=True)
-    table.add_column(
-        Sections.SOFTWARE.value, justify="full", style="cyan", no_wrap=True
-    )
-    tasks_by_section = defaultdict(list)
-    for task in tasks:
-        if task.get("section") in sections:
-            tasks_by_section[task.get("section")].append(
-                f"[bold]{task.get("number")}[/bold]. {task.get("name")}"
-            )
-    max_tasks = max(len(tasks_by_section[section]) for section in sections)
-    for idx in range(max_tasks):
-        row = []
-        for section in sections:
-            if idx < len(tasks_by_section[section]):
-                row.append(tasks_by_section[section][idx])
-            else:
-                row.append("")
-        table.add_row(*row)
-    table.add_row("", "", "")
-    table.add_row("", "", "")
-    table.add_row(
-        "[bold]100[/bold]. Run All System Related Tasks",
-        "[bold]200[/bold]. Run All Software Related Tasks",
-    )
-    console.print(table)
-
-
-def main():
-    cleanup()
-    os.system("clear")
-    display_table()
-    console.print("[bold green]Lets Roll...[/bold green]")
-    while True:
-        choice = Prompt.ask("[bold blue]Pysible ~> [/bold blue]").strip()
-
-        match choice:
-            case "00":
-                selected_modules = [task.get("number") for task in tasks]
-                run_modules(
-                    selected_modules,
-                )
-            case "100":
-                selected_modules = [
-                    task.get("number")
-                    for task in tasks
-                    if task("section") == Sections.SYSTEM.value
-                ]
-                run_modules(
-                    selected_modules,
-                )
-            case "200":
-                selected_modules = [
-                    task.get("number")
-                    for task in tasks
-                    if task.get("section") == Sections.SOFTWARE.value
-                ]
-                run_modules(
-                    selected_modules,
-                )
-            case "q" | "exit" | "quit":
-                cleanup()
-                exit(0)
-            case _:
-                selected_modules = [
-                    mod.strip() for mod in choice.replace(",", " ").split()
-                ]
-                if all(mod in tasks_mapping for mod in selected_modules):
-                    # run_modules(selected_modules)
-                    for mod_number in selected_modules:
-                        task = tasks_mapping.get(mod_number)
-                        if task.get("func"):
-                            playbook = task.get("func")
-                            _ = misc.execute_playbook(playbook)
-                else:
-                    console.print(
-                        "[bold red]Invalid Input! Please choose valid options.[/bold red]"
-                    )
-                    display_table()
-
-
-def cleanup():
-    misc.delete_tmp_dir()
-
 
 if __name__ == "__main__":
+
+    app = PysibleApp()
+
     try:
-        main()
+        app.run()
     except KeyboardInterrupt:
         console.print(
             "\n[bold yellow]Ctrl+C pressed. Exiting gracefully...[/bold yellow]"
         )
-        cleanup()
-        exit(0)
+    except Exception as e:
+        Logger.failure(f"An unexpected critical error occurred at the top level of Pysible: {e}")
+    finally:
+        try:
+            app.exit_handler()
+        except Exception as cleanup_err:
+            Logger.failure(f"Error during final cleanup: {cleanup_err}")
+            exit(1)

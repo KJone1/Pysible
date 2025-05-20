@@ -6,21 +6,6 @@ from pysible.config.settings import settings
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
-
-def install_kubectl(version: str) -> None:
-
-    kubectl_ver = f"https://dl.k8s.io/release/{version}/bin/linux/amd64/kubectl"
-    kubectl_dest = "/usr/local/bin/kubectl"
-
-    Logger.info(f"Starting to install kubectl {version}")
-    try:
-        net.wget(url=kubectl_ver, dest=kubectl_dest)
-        files.set_file_permissions(kubectl_dest, "555")
-        Logger.success(f"Installed kubectl {version}")
-    except Exception:
-        raise
-
-
 def install_nerdctl(version: str = "2.0.0") -> None:
     nerdctl_url = f"https://github.com/containerd/nerdctl/releases/download/v{version}/nerdctl-{version}-linux-amd64.tar.gz"
     nerdctl_bin_dest = "/usr/local/bin/nerdctl"

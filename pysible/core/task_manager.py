@@ -7,6 +7,7 @@ from pysible.modules.buildkit import install_buildkit
 from pysible.modules.dotfiles import install_dotfiles
 from pysible.modules.k9s import install_k9s
 from pysible.modules.kubectl import install_kubectl
+from pysible.modules.sudoers import setup_sudoers
 from pysible.modules.tomb import install_tomb
 from pysible.utils.log_utils import Logger
 
@@ -52,7 +53,7 @@ class TaskManager:
             Task(
                 number=5,
                 name="Install Kubectl",
-                action_function="kubectl.py",
+                action_function=install_kubectl,
                 section=Sections.SOFTWARE.value,
             ),
             Task(
@@ -63,19 +64,24 @@ class TaskManager:
                 params={"version":"v0.21.0"}
             ),
             Task(
-                number=6,
+                number=7,
                 name="Install k9s",
                 action_function=install_k9s,
                 section=Sections.SOFTWARE.value,
                 params={"version": "v0.50.3"}
             ),
             Task(
-                number=6,
+                number=8,
                 name="Install kubectl",
                 action_function=install_kubectl,
                 section=Sections.SOFTWARE.value,
             ),
-
+            Task(
+                number=9,
+                name="Setup sudoers file",
+                action_function=setup_sudoers,
+                section=Sections.SYSTEM.value,
+            ),
 
         ]
         for task in task_definitions:

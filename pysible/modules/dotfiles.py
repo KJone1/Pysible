@@ -11,7 +11,7 @@ def install_dotfiles():
 
     try:
         dotfiles.clone_dotfiles(repo_url=repo_url, dest=dotfile_dir)
-        dotfiles.run_dotfiles_intall_script(dotfiles_repo_path=dotfile_dir)
+        dotfiles.run_dotfiles_install_script(dotfiles_repo_path=dotfile_dir)
         Logger.success("Successfully setup dotfiles")
 
     except sh.ErrorReturnCode as e:
