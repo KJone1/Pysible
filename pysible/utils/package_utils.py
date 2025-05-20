@@ -5,7 +5,7 @@ from pysible.utils.log_utils import Logger
 
 import sh
 
-from pysible.config.constants import Consts
+from pysible.config.settings import settings
 
 
 def install_package(package: str, package_manager: str = "dnf") -> str:
@@ -26,7 +26,7 @@ def install_package(package: str, package_manager: str = "dnf") -> str:
 
 def install_packages_parallel(
     package_list: set[str], package_manager: str, max_workers: int = 8
-) -> None:
+) -> int:
     """
     Installs a list of packages concurrently using the specified package manager.
     """

@@ -1,13 +1,13 @@
 from pysible.utils.file_utils import untar
 from pysible.utils.misc_utils import create_tmp_dir, sudo_run
 from pysible.utils.net_utils import wget
-from pysible.config.constants import Consts
+from pysible.config.settings import settings
 from pysible.utils.log_utils import Logger
 
 
 def install_tomb(version: str) -> None:
     tmp_dir_name = "tomb"
-    tmp_dir_path = f"{Consts.TMP_DIR}/{tmp_dir_name}"
+    tmp_dir_path = f"{settings.TMP_DIR}/{tmp_dir_name}"
     url = f"https://github.com/dyne/tomb/archive/refs/tags/v{version}.tar.gz"
     file_dest = f"{tmp_dir_path}/{version}.tar.gz"
 

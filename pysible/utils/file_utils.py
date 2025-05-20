@@ -4,7 +4,7 @@ import tarfile
 import sh
 from loguru import logger
 
-from pysible.config.constants import Consts
+from pysible.config.settings import settings
 
 from .misc_utils import sudo_run
 
@@ -25,7 +25,7 @@ def copy_resource(filename: str, dest: str, sudo: bool = False) -> str:
       ErrorReturnCode: If sh.cp fails to copy
     """
 
-    source_path = os.path.join(Consts.RESOURCES_DIR, filename)
+    source_path = os.path.join(settings.RESOURCES_DIR, filename)
     if not os.path.exists(source_path) or not os.path.isfile(source_path):
         raise FileNotFoundError(f"Copying {source_path} Failed -> File not found")
 

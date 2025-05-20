@@ -1,7 +1,7 @@
 from loguru import logger
 import sh
 
-from pysible.config.constants import Consts
+from pysible.config.settings import settings
 from pysible.utils.file_utils import copy_resource
 
 

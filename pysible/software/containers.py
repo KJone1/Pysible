@@ -2,7 +2,7 @@ import sh
 import pysible.utils.file_utils as files
 import pysible.utils.net_utils as net
 import pysible.utils.package_utils as pkg
-from pysible.config.constants import Consts
+from pysible.config.settings import settings
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
@@ -30,7 +30,7 @@ def install_nerdctl(version: str = "2.0.0") -> None:
 
         create_tmp_dir(name="nerdctl")
 
-        tmp_dir = f"{Consts.TMP_DIR}/nerdctl"
+        tmp_dir = f"{settings.TMP_DIR}/nerdctl"
         local_tar_name = f"{tmp_dir}/nerd-{version}.tar.gz"
         net.wget(url=nerdctl_url, dest=local_tar_name)
 
@@ -65,7 +65,7 @@ def install_k0s() -> None:
 def install_k9s(version: str) -> None:
     k9s_url = f"https://github.com/derailed/k9s/releases/download/{version}/k9s_Linux_amd64.rpm"
     k9s_tmp_dir_name = "k9s"
-    k9s_tmp_dir_path = f"{Consts.TMP_DIR}/{k9s_tmp_dir_name}"
+    k9s_tmp_dir_path = f"{settings.TMP_DIR}/{k9s_tmp_dir_name}"
 
     Logger.info(f"Starting to install k9s {version}...")
     try:
@@ -82,7 +82,7 @@ def install_k9s(version: str) -> None:
 def install_buildkit(version: str) -> None:
     url = f"https://github.com/moby/buildkit/releases/download/{version}/buildkit-{version}.linux-amd64.tar.gz"
     tmp_dir_name = "buildkit"
-    tmp_dir_path = f"{Consts.TMP_DIR}/{tmp_dir_name}"
+    tmp_dir_path = f"{settings.TMP_DIR}/{tmp_dir_name}"
     buildkitd_dest = "/usr/local/bin/buildkitd"
     buildctl_dest = "/usr/local/bin/buildctl"
     Logger.info("Starting to install Buildkit...")

@@ -9,7 +9,6 @@ import pysible.software.containers as containers
 import pysible.system.moonlander as moonlander
 from pysible.system.sddm import SddmTheme
 import pysible.system.sudoers as sudoers
-from pysible.config.config import load_config
 import pysible.utils.misc_utils as misc
 
 console = Console()
@@ -24,31 +23,31 @@ tasks = [
     {
         "number": "1",
         "name": "Install DNF Packages",
-        "func": "run_dnf.py",
+        "func": "dnf.py",
         "section": Sections.SOFTWARE.value,
     },
     {
         "number": "2",
         "name": "Install Flatpak Packages",
-        "func": "run_flatpak.py",
+        "func": "flatpak.py",
         "section": Sections.SOFTWARE.value,
     },
     {
         "number": "3",
         "name": "Install Tomb",
-        "func": "run_tomb.py",
+        "func": "tomb.py",
         "section": Sections.SOFTWARE.value,
     },
     {
         "number": "4",
         "name": "Install Kubectl",
-        "func": "run_kubectl.py",
+        "func": "kubectl.py",
         "section": Sections.SOFTWARE.value,
     },
     {
         "number": "5",
         "name": "Install Buildkit",
-        "func": "run_buildkit.py",
+        "func": "buildkit.py",
         "section": Sections.SOFTWARE.value,
     },
     {
@@ -60,7 +59,7 @@ tasks = [
     {
         "number": "7",
         "name": "Install k9s",
-        "func": "run_k9s.py",
+        "func": "k9s.py",
         "section": Sections.SOFTWARE.value,
     },
     {
@@ -72,7 +71,7 @@ tasks = [
     {
         "number": "9",
         "name": "Configure Dotfiles",
-        "func": "run_dotfiles.py",
+        "func": "dotfiles.py",
         "section": Sections.SYSTEM.value,
     },
     {
@@ -146,7 +145,6 @@ def display_table():
 
 
 def main():
-    load_config()
     cleanup()
     os.system("clear")
     display_table()

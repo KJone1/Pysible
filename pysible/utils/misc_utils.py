@@ -6,16 +6,16 @@ from shutil import rmtree
 
 import sh
 
-from pysible.config.constants import Consts
+from pysible.config.settings import settings
 
 
 def create_tmp_dir(name: str) -> None:
-    sh.mkdir("-p", f"{Consts.TMP_DIR}/{name}")
+    sh.mkdir("-p", f"{settings.TMP_DIR}/{name}")
 
 
 def delete_tmp_dir() -> None:
-    if os.path.exists(Consts.TMP_DIR):
-        rmtree(Consts.TMP_DIR)
+    if os.path.exists(settings.TMP_DIR):
+        rmtree(settings.TMP_DIR)
 
 
 def sudo_run(command: str, *args, **kwargs) -> None:
@@ -25,7 +25,7 @@ def sudo_run(command: str, *args, **kwargs) -> None:
         command: the command to execute (e.g., 'make', 'ls', 'cp').
         *args:  any arguments to pass to the command.
     """
-    with sh.contrib.sudo(_with=True, password=Consts.ROOT_PASS):
+    with sh.contrib.sudo(_with=True, password=settings.ROOT_PASS):
         getattr(sh, command)(*args, **kwargs)
 
 
@@ -45,7 +45,7 @@ def execute_playbook(playbook_filename: str):
         print(f"Error: Playbook file '{playbook_filename}' not found.")
         return False
 
-    project_root = Consts.ROOT_DIR
+    project_root = settings.ROOT_DIR
 
     new_env = os.environ.copy()
 
