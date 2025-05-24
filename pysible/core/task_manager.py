@@ -1,24 +1,9 @@
-from enum import Enum
+import importlib
+import pkgutil
 
+from pysible.config.settings import Sections, settings
 from pysible.core.task import Task
-from pysible.modules.buildkit import install_buildkit
-from pysible.modules.dnf import install_dnf_packages
-from pysible.modules.dotfiles import install_dotfiles
-from pysible.modules.flatpak import install_flatpak_packages
-from pysible.modules.k0s import install_k0s
-from pysible.modules.k9s import install_k9s
-from pysible.modules.kubectl import install_kubectl
-from pysible.modules.moonlander import setup_moonlander
-from pysible.modules.nerdctl import install_nerdctl
-from pysible.modules.sddm import setup_sddm
-from pysible.modules.sudoers import setup_sudoers
-from pysible.modules.tomb import install_tomb
 from pysible.utils.log_utils import Logger
-
-
-class Sections(Enum):
-    SYSTEM = "Configure System"
-    SOFTWARE = "Download and Install Software"
 
 
 class TaskManager:
@@ -26,90 +11,26 @@ class TaskManager:
         self.tasks: dict[int, Task] = {}
         self._register_tasks()
 
-    def _register_tasks(self):
+    def _load_modules(self):
+        import pysible.modules
 
-        task_definitions = [
-            Task(
-                number=1,
-                name="Install Core DNF Packages",
-                action_function=install_dnf_packages,
-                section=Sections.SOFTWARE.value,
-            ),
-            Task(
-                number=2,
-                name="Install Flatpak Packages",
-                action_function=install_flatpak_packages,
-                section=Sections.SOFTWARE.value,
-            ),
-            Task(
-                number=3,
-                name="Install Tomb",
-                action_function=install_tomb,
-                section=Sections.SOFTWARE.value,
-                params={"version": "2.11"},
-            ),
-            Task(
-                number=4,
-                name="Install Dot files",
-                action_function=install_dotfiles,
-                section=Sections.SYSTEM.value,
-            ),
-            Task(
-                number=5,
-                name="Install Kubectl",
-                action_function=install_kubectl,
-                section=Sections.SOFTWARE.value,
-            ),
-            Task(
-                number=6,
-                name="Install Buildkit",
-                action_function=install_buildkit,
-                section=Sections.SOFTWARE.value,
-                params={"version": "v0.21.0"},
-            ),
-            Task(
-                number=7,
-                name="Install k9s",
-                action_function=install_k9s,
-                section=Sections.SOFTWARE.value,
-                params={"version": "v0.50.3"},
-            ),
-            Task(
-                number=8,
-                name="Setup sudoers file",
-                action_function=setup_sudoers,
-                section=Sections.SYSTEM.value,
-            ),
-            Task(
-                number=9,
-                name="Install k0s",
-                action_function=install_k0s,
-                section=Sections.SOFTWARE.value,
-            ),
-            Task(
-                number=10,
-                name="Install nerdctl",
-                action_function=install_nerdctl,
-                section=Sections.SOFTWARE.value,
-                params={"version": "2.0.0"},
-            ),
-            Task(
-                number=11,
-                name="Setup Moonlander keyboard",
-                action_function=setup_moonlander,
-                section=Sections.SYSTEM.value,
-            ),
-            Task(
-                number=12,
-                name="Setup SDDM theme",
-                action_function=setup_sddm,
-                section=Sections.SYSTEM.value,
-            ),
-        ]
-        for task in task_definitions:
+        package = pysible.modules
+        for _, module_name, _ in pkgutil.walk_packages(
+            package.__path__, package.__name__ + "."
+        ):
+            try:
+                importlib.import_module(module_name)
+                Logger.info(f"Discovered module: {module_name}")
+            except ImportError as e:
+                Logger.warn(f"Could not import module {module_name}: {e}")
+
+    def _register_tasks(self):
+        self._load_modules()
+
+        for task in settings.REGISTERED_TASKS:
             if task.number in self.tasks:
                 Logger.warn(
-                    f"Task number {task.number} ('{task.name}') is duplicated. Overwriting."
+                    f"Task number {task.number} ('{task.name}') is duplicated from plugin system. Overwriting."
                 )
             self.tasks[task.number] = task
 

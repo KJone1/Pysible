@@ -3,7 +3,8 @@ from os import path
 import sh
 
 import pysible.exceptions.dotfiles as exceptions
-from pysible.config.settings import settings
+from pysible.config.settings import Sections, settings
+from pysible.core.task_plugin_decorator import task_plugin
 from pysible.utils.log_utils import Logger
 from pysible.utils.net_utils import git_clone
 
@@ -25,6 +26,10 @@ def _run_dotfiles_install_script(dotfiles_repo_path: str) -> None:
         ) from e
 
 
+@task_plugin(
+    name="Install Dot files",
+    section=Sections.SYSTEM,
+)
 def install_dotfiles():
     dotfile_dir = f"{settings.HOME_DIR}/DEV/dotfiles"
     repo_url = "https://github.com/KJone1/dotfiles.git"

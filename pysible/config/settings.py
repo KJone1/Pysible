@@ -1,6 +1,12 @@
+from enum import Enum
 from pathlib import Path
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+
+class Sections(Enum):
+    SYSTEM = "Configure System"
+    SOFTWARE = "Download and Install Software"
 
 
 class AppSettings(BaseSettings):
@@ -11,6 +17,7 @@ class AppSettings(BaseSettings):
     HOME_DIR: Path = Path.home()
     RESOURCES_DIR_NAME: str = "resources"
     TMP_DIR_NAME: str = "tmp"
+    REGISTERED_TASKS: list = []
 
     @property
     def ROOT_DIR(self) -> Path:

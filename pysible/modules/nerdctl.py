@@ -2,11 +2,15 @@ import sh
 
 import pysible.utils.file_utils as files
 import pysible.utils.net_utils as net
-from pysible.config.settings import settings
+from pysible.config.settings import Sections, settings
+from pysible.core.task_plugin_decorator import task_plugin
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
 
+@task_plugin(
+    name="Install nerdctl", section=Sections.SOFTWARE, params={"version": "2.0.0"}
+)
 def install_nerdctl(version: str = "2.0.0") -> None:
     nerdctl_url = f"https://github.com/containerd/nerdctl/releases/download/v{version}/nerdctl-{version}-linux-amd64.tar.gz"
     nerdctl_bin_dest = "/usr/local/bin/nerdctl"

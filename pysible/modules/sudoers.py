@@ -1,10 +1,12 @@
 import sh
 
-from pysible.config.settings import settings
+from pysible.config.settings import Sections, settings
+from pysible.core.task_plugin_decorator import task_plugin
 from pysible.utils.file_utils import copy_resource
 from pysible.utils.log_utils import Logger
 
 
+@task_plugin(name="Setup sudoers file", section=Sections.SYSTEM)
 def setup_sudoers():
     sudoers_file_name = f"{settings.RESOURCES_DIR}/kj"
     sudoers_path = "/etc/sudoers.d/kj"

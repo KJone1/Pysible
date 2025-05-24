@@ -2,11 +2,15 @@ import sh
 
 import pysible.utils.net_utils as net
 import pysible.utils.package_utils as pkg
-from pysible.config.settings import settings
+from pysible.config.settings import Sections, settings
+from pysible.core.task_plugin_decorator import task_plugin
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
 
+@task_plugin(
+    name="Install k9s", section=Sections.SOFTWARE, params={"version": "v0.50.3"}
+)
 def install_k9s(version: str):
     try:
         k9s_url = f"https://github.com/derailed/k9s/releases/download/{version}/k9s_Linux_amd64.rpm"

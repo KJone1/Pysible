@@ -1,12 +1,17 @@
 import sh
 
-from pysible.config.settings import settings
+import pysible.utils.file_utils as files
+import pysible.utils.net_utils as net
+from pysible.config.settings import Sections, settings
+from pysible.core.task_plugin_decorator import task_plugin
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
-import pysible.utils.file_utils as files
 
 
-def install_buildkit(version: str, net=None) -> None:
+@task_plugin(
+    name="Install Buildkit", section=Sections.SOFTWARE, params={"version": "v0.21.0"}
+)
+def install_buildkit(version: str) -> None:
     url = f"https://github.com/moby/buildkit/releases/download/{version}/buildkit-{version}.linux-amd64.tar.gz"
     tmp_dir_name = "buildkit"
     tmp_dir_path = f"{settings.TMP_DIR}/{tmp_dir_name}"

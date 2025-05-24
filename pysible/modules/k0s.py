@@ -1,8 +1,11 @@
 import sh
 
+from pysible.config.settings import Sections
+from pysible.core.task_plugin_decorator import task_plugin
 from pysible.utils.log_utils import Logger
 
 
+@task_plugin(name="Install k0s", section=Sections.SOFTWARE)
 def install_k0s() -> None:
     Logger.info("Starting to install k0s...")
     try:

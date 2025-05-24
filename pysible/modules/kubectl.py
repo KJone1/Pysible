@@ -2,6 +2,8 @@ import requests
 
 import pysible.utils.file_utils as files
 import pysible.utils.net_utils as net
+from pysible.config.settings import Sections
+from pysible.core.task_plugin_decorator import task_plugin
 from pysible.exceptions.task_exceptions import TaskFailedException
 from pysible.utils.log_utils import Logger
 
@@ -16,6 +18,7 @@ def _download_kubectl(version: str) -> str:
     return kubectl_dest
 
 
+@task_plugin(name="Install Kubectl", section=Sections.SOFTWARE)
 def install_kubectl():
     version_url = "https://dl.k8s.io/release/stable.txt"
     try:
