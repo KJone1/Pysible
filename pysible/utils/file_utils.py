@@ -29,30 +29,30 @@ def copy_resource(filename: str, dest: str, sudo: bool = False) -> str:
     if not os.path.exists(source_path) or not os.path.isfile(source_path):
         raise FileNotFoundError(f"Copying {source_path} Failed -> File not found")
 
-    try:
-        destination_dir = os.path.dirname(dest)
-        if not os.path.exists(destination_dir):
-            sudo_run("mkdir", "-p", destination_dir)
+    destination_dir = os.path.dirname(dest)
+    if not os.path.exists(destination_dir):
+        sudo_run("mkdir", "-p", destination_dir)
 
-        if sudo:
-            sudo_run("cp", source_path, dest)
-        else:
-            sh.cp(source_path, dest)
-        return dest
+    if sudo:
+        sudo_run("cp", source_path, dest)
+    else:
+        sh.cp(source_path, dest)
+    return dest
+
 
 def untar(input_tar: str, output: str, strip: bool = False) -> None:
-    try:
-        with tarfile.open(input_tar, "r:gz") as tar:
-            if strip:
-                # --strip=1
-                for member in tar.getmembers():
-                    stripped_name = os.path.relpath(
-                        member.name, member.name.split(os.sep)[0]
-                    )
-                    member.name = stripped_name
-                    tar.extract(member, output)
-            else:
-                tar.extractall(output)
+    with tarfile.open(input_tar, "r:gz") as tar:
+        if strip:
+            # --strip=1
+            for member in tar.getmembers():
+                stripped_name = os.path.relpath(
+                    member.name, member.name.split(os.sep)[0]
+                )
+                member.name = stripped_name
+                tar.extract(member, output)
+        else:
+            tar.extractall(output)
+
 
 def set_file_permissions(file_path: str, permission: str) -> None:
     """
