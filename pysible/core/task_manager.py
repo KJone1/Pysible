@@ -5,6 +5,7 @@ from pysible.modules.dnf import install_dnf_packages
 from pysible.modules.flatpak import install_flatpak_packages
 from pysible.modules.buildkit import install_buildkit
 from pysible.modules.dotfiles import install_dotfiles
+from pysible.modules.k0s import install_k0s
 from pysible.modules.k9s import install_k9s
 from pysible.modules.kubectl import install_kubectl
 from pysible.modules.sudoers import setup_sudoers
@@ -81,6 +82,12 @@ class TaskManager:
                 name="Setup sudoers file",
                 action_function=setup_sudoers,
                 section=Sections.SYSTEM.value,
+            ),
+            Task(
+                number=10,
+                name="Install k0s",
+                action_function=install_k0s,
+                section=Sections.SOFTWARE.value,
             ),
 
         ]
