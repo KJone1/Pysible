@@ -10,6 +10,7 @@ from pysible.modules.k9s import install_k9s
 from pysible.modules.kubectl import install_kubectl
 from pysible.modules.moonlander import setup_moonlander
 from pysible.modules.nerdctl import install_nerdctl
+from pysible.modules.sddm import setup_sddm
 from pysible.modules.sudoers import setup_sudoers
 from pysible.modules.tomb import install_tomb
 from pysible.utils.log_utils import Logger
@@ -102,6 +103,12 @@ class TaskManager:
                 number=12,
                 name="Setup Moonlander keyboard",
                 action_function=setup_moonlander,
+                section=Sections.SYSTEM.value,
+            ),
+            Task(
+                number=13,
+                name="Setup SDDM theme",
+                action_function=setup_sddm,
                 section=Sections.SYSTEM.value,
             ),
         ]
