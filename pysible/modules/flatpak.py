@@ -1,5 +1,4 @@
 import pysible.utils.package_utils as packages
-import pysible.utils.package_utils as pkg_utils
 
 
 def install_flatpak_packages():
@@ -12,6 +11,5 @@ def install_flatpak_packages():
         "com.github.tchx84.Flatseal",
     }
 
-    pkg_utils.setup_flatpak_repo()
-
+    packages.setup_flatpak_repo()
     packages.install(package_manager="flatpak", package_list=package_list)
