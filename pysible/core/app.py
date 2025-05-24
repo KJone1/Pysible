@@ -1,7 +1,6 @@
 import os
 from collections import defaultdict
 
-from pysible.exceptions.task_exceptions import TaskFailedException
 from rich.box import SIMPLE_HEAVY
 from rich.console import Console
 from rich.prompt import Prompt
@@ -9,6 +8,7 @@ from rich.table import Table
 
 from pysible.core.task import Task
 from pysible.core.task_manager import Sections, TaskManager
+from pysible.exceptions.task_exceptions import TaskFailedException
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import delete_tmp_dir
 

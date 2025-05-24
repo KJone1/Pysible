@@ -1,4 +1,5 @@
 from rich.console import Console
+
 from pysible.core.app import PysibleApp
 from pysible.utils.log_utils import Logger
 
