@@ -39,9 +39,6 @@ def copy_resource(filename: str, dest: str, sudo: bool = False) -> str:
         else:
             sh.cp(source_path, dest)
         return dest
-    except sh.ErrorReturnCode as e:
-        raise e from e
-
 
 def untar(input_tar: str, output: str, strip: bool = False) -> None:
     try:
@@ -56,9 +53,6 @@ def untar(input_tar: str, output: str, strip: bool = False) -> None:
                     tar.extract(member, output)
             else:
                 tar.extractall(output)
-    except Exception as e:
-        raise e
-
 
 def set_file_permissions(file_path: str, permission: str) -> None:
     """
