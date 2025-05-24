@@ -1,6 +1,7 @@
 import os
 from collections import defaultdict
 
+from pysible.exceptions.task_exceptions import TaskFailedException
 from rich.box import SIMPLE_HEAVY
 from rich.console import Console
 from rich.prompt import Prompt

@@ -14,10 +14,6 @@ if __name__ == "__main__":
         console.print(
             "\n[bold yellow]Ctrl+C pressed. Exiting gracefully...[/bold yellow]"
         )
-    except Exception as e:
-        Logger.failure(
-            f"An unexpected critical error occurred at the top level of Pysible: {e}"
-        )
     finally:
         try:
             app.exit_handler()

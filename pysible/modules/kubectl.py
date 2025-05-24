@@ -2,6 +2,7 @@ import requests
 
 import pysible.utils.file_utils as files
 import pysible.utils.net_utils as net
+from pysible.exceptions.task_exceptions import TaskFailedException
 from pysible.utils.log_utils import Logger
 
 
@@ -26,8 +27,26 @@ def install_kubectl():
         files.set_file_permissions(path, "555")
         Logger.success(f"Installed kubectl {version}")
     except requests.HTTPError as e:
-        raise Logger.failure(f"Failed to download kubectl -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Failed to download kubectl",
+        )
+    except RuntimeError as e:
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Caught RuntimeError while downloading kubectl",
+        )
     except requests.exceptions.RequestException as e:
-        Logger.failure(f"Error fetching Kubernetes version -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Error fetching Kubernetes version",
+        )
     except Exception as e:
-        Logger.failure(f"Caught unexpected error while installing kubectl -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Caught unexpected error while installing kubectl",
+        )

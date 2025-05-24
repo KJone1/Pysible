@@ -21,5 +21,7 @@ class Task:
         try:
             self.action_function(**self.params)
             Logger.success(f"Task '{self.name}' completed successfully.")
+        except TaskFailedException as e:
+            Logger.failure(f"{e}")
         except Exception as e:
-            raise TaskFailedException(task_name=self.name, original_exception=e) from e
+            Logger.failure(f"This exception should have never happened: {e}")
