@@ -15,7 +15,7 @@ def _update_sddm_theme(config_file_path:str,theme_name:str) -> None:
             else:
                 f.write(line)
 
-def setup_sddm(self) -> None:
+def setup_sddm() -> None:
 
     sddm_repo_name = "https://github.com/KJone1/sddm-dark-chocolate.git"
     clone_dest = "/usr/share/sddm/themes/sddm-dark-chocolate"
