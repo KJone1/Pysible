@@ -8,6 +8,7 @@ from pysible.modules.flatpak import install_flatpak_packages
 from pysible.modules.k0s import install_k0s
 from pysible.modules.k9s import install_k9s
 from pysible.modules.kubectl import install_kubectl
+from pysible.modules.moonlander import setup_moonlander
 from pysible.modules.nerdctl import install_nerdctl
 from pysible.modules.sudoers import setup_sudoers
 from pysible.modules.tomb import install_tomb
@@ -96,6 +97,12 @@ class TaskManager:
                 action_function=install_nerdctl,
                 section=Sections.SOFTWARE.value,
                 params={"version": "2.0.0"},
+            ),
+            Task(
+                number=12,
+                name="Setup Moonlander keyboard",
+                action_function=setup_moonlander,
+                section=Sections.SYSTEM.value,
             ),
         ]
         for task in task_definitions:
