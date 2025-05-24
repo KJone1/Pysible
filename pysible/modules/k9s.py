@@ -1,12 +1,13 @@
-from pysible.config.settings import settings
-from pysible.utils.log_utils import Logger
 import sh
+
 import pysible.utils.net_utils as net
 import pysible.utils.package_utils as pkg
+from pysible.config.settings import settings
+from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
 
-def install_k9s(version:str):
+def install_k9s(version: str):
     try:
         k9s_url = f"https://github.com/derailed/k9s/releases/download/{version}/k9s_Linux_amd64.rpm"
         k9s_tmp_dir_name = "k9s"

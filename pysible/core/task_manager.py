@@ -1,13 +1,14 @@
 from enum import Enum
 
 from pysible.core.task import Task
-from pysible.modules.dnf import install_dnf_packages
-from pysible.modules.flatpak import install_flatpak_packages
 from pysible.modules.buildkit import install_buildkit
+from pysible.modules.dnf import install_dnf_packages
 from pysible.modules.dotfiles import install_dotfiles
+from pysible.modules.flatpak import install_flatpak_packages
 from pysible.modules.k0s import install_k0s
 from pysible.modules.k9s import install_k9s
 from pysible.modules.kubectl import install_kubectl
+from pysible.modules.nerdctl import install_nerdctl
 from pysible.modules.sudoers import setup_sudoers
 from pysible.modules.tomb import install_tomb
 from pysible.utils.log_utils import Logger
@@ -43,7 +44,7 @@ class TaskManager:
                 name="Install Tomb",
                 action_function=install_tomb,
                 section=Sections.SOFTWARE.value,
-                params={"version":"2.11"}
+                params={"version": "2.11"},
             ),
             Task(
                 number=4,
@@ -62,14 +63,14 @@ class TaskManager:
                 name="Install Buildkit",
                 action_function=install_buildkit,
                 section=Sections.SOFTWARE.value,
-                params={"version":"v0.21.0"}
+                params={"version": "v0.21.0"},
             ),
             Task(
                 number=7,
                 name="Install k9s",
                 action_function=install_k9s,
                 section=Sections.SOFTWARE.value,
-                params={"version": "v0.50.3"}
+                params={"version": "v0.50.3"},
             ),
             Task(
                 number=8,
@@ -89,7 +90,13 @@ class TaskManager:
                 action_function=install_k0s,
                 section=Sections.SOFTWARE.value,
             ),
-
+            Task(
+                number=11,
+                name="Install nerdctl",
+                action_function=install_nerdctl,
+                section=Sections.SOFTWARE.value,
+                params={"version": "2.0.0"},
+            ),
         ]
         for task in task_definitions:
             if task.number in self.tasks:

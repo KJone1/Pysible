@@ -1,8 +1,9 @@
 import sh
 
+from pysible.config.settings import settings
 from pysible.utils.file_utils import copy_resource
 from pysible.utils.log_utils import Logger
-from pysible.config.settings import settings
+
 
 def setup_sudoers():
     sudoers_file_name = f"{settings.RESOURCES_DIR}/kj"

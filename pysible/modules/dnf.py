@@ -1,5 +1,6 @@
 import pysible.utils.package_utils as packages
 
+
 def install_dnf_packages():
     package_list = {
         "code",

@@ -2,6 +2,7 @@ import sh
 
 from pysible.utils.log_utils import Logger
 
+
 def install_k0s() -> None:
     Logger.info("Starting to install k0s...")
     try:

@@ -1,11 +1,11 @@
-from pydantic_settings import BaseSettings, SettingsConfigDict
 from pathlib import Path
+
+from pydantic_settings import BaseSettings, SettingsConfigDict
+
 
 class AppSettings(BaseSettings):
     model_config = SettingsConfigDict(
-        env_file='.env',
-        env_file_encoding='utf-8',
-        extra='ignore'
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
     ROOT_PASS: str
     HOME_DIR: Path = Path.home()
@@ -23,5 +23,6 @@ class AppSettings(BaseSettings):
     @property
     def TMP_DIR(self) -> Path:
         return self.ROOT_DIR / self.TMP_DIR_NAME
+
 
 settings = AppSettings()

@@ -38,15 +38,14 @@ def copy_resource(filename: str, dest: str, sudo: bool = False) -> str:
             sudo_run("cp", source_path, dest)
         else:
             sh.cp(source_path, dest)
+        return dest
     except sh.ErrorReturnCode as e:
         raise e from e
-    else:
-        return dest
 
 
-def untar(input: str, output: str, strip: bool = False) -> None:
+def untar(input_tar: str, output: str, strip: bool = False) -> None:
     try:
-        with tarfile.open(input, "r:gz") as tar:
+        with tarfile.open(input_tar, "r:gz") as tar:
             if strip:
                 # --strip=1
                 for member in tar.getmembers():

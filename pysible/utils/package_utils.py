@@ -1,11 +1,8 @@
-from .misc_utils import sudo_run
 from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from pysible.utils.log_utils import Logger
 
-import sh
-
-from pysible.config.settings import settings
+from .misc_utils import sudo_run
 
 
 def install_package(package: str, package_manager: str = "dnf") -> str:
@@ -72,9 +69,7 @@ def install(package_manager: str, package_list: set[str]) -> None:
     Logger.info(f"Starting installation of {package_count} {package_manager} packages.")
 
     try:
-        installed_packages = _install_packages_parallel(
-            package_list, package_manager
-        )
+        installed_packages = _install_packages_parallel(package_list, package_manager)
 
         Logger.info(
             f"{installed_packages}/{package_count} {package_manager} packages installed successfully."

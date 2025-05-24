@@ -1,6 +1,7 @@
 import pysible.utils.package_utils as packages
 import pysible.utils.package_utils as pkg_utils
 
+
 def install_flatpak_packages():
     package_list = {
         "com.discordapp.Discord",

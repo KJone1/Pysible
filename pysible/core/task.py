@@ -1,5 +1,5 @@
-from pysible.utils.log_utils import Logger
 from pysible.exceptions.task_exceptions import TaskFailedException
+from pysible.utils.log_utils import Logger
 
 
 class Task:

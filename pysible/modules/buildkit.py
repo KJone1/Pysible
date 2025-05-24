@@ -1,6 +1,6 @@
-import pysible.software.containers as containers
-from pysible.utils.log_utils import Logger
 import sh
+
+from pysible.utils.log_utils import Logger
 
 
 def install_buildkit(version: str) -> None:
@@ -16,7 +16,7 @@ def install_buildkit(version: str) -> None:
         local_tar_path = f"{tmp_dir_path}/buildkit-{version}.tar.gz"
         net.wget(url=url, dest=local_tar_path)
 
-        files.untar(input=local_tar_path, output=tmp_dir_path, strip=True)
+        files.untar(input_tar=local_tar_path, output=tmp_dir_path, strip=True)
         files.copy(source=f"{tmp_dir_path}/buildkitd", dest=buildkitd_dest)
         files.copy(source=f"{tmp_dir_path}/buildctl", dest=buildctl_dest)
         files.set_file_permissions(buildkitd_dest, "555")

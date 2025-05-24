@@ -15,7 +15,7 @@ def wget(url: str, dest: str) -> None:
         if not url.startswith("http"):
             raise ValueError("Invalid URL format.")
 
-        with requests.get(url, stream=True) as r:
+        with requests.get(url, stream=True, timeout=30) as r:
             r.raise_for_status()
             with open(dest, "wb") as f:
                 for chunk in r.iter_content(chunk_size=8192):

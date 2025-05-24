@@ -1,10 +1,10 @@
 import re
+from shutil import rmtree
 
 from sh import ErrorReturnCode
 
 from pysible.utils.log_utils import Logger
 from pysible.utils.net_utils import git_clone
-from shutil import rmtree
 
 
 class SddmTheme:

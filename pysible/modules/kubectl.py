@@ -1,8 +1,9 @@
-import pysible.software.containers as containers
 import requests
-from pysible.utils.log_utils import Logger
+
 import pysible.utils.file_utils as files
 import pysible.utils.net_utils as net
+from pysible.utils.log_utils import Logger
+
 
 def _download_kubectl(version: str) -> str:
     Logger.info(f"Downloading kubectl {version}")
@@ -12,6 +13,7 @@ def _download_kubectl(version: str) -> str:
 
     net.wget(url=kubectl_ver, dest=kubectl_dest)
     return kubectl_dest
+
 
 def install_kubectl():
     version_url = "https://dl.k8s.io/release/stable.txt"

@@ -1,7 +1,6 @@
 import os
 import subprocess
 import sys
-
 from shutil import rmtree
 
 import sh
