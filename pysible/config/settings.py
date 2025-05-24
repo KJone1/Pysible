@@ -14,7 +14,7 @@ class AppSettings(BaseSettings):
 
     @property
     def ROOT_DIR(self) -> Path:
-        return Path(__file__).absolute().parent.parent.parent
+        return Path(__file__).resolve().parent.parent.parent
 
     @property
     def RESOURCES_DIR(self) -> Path:
