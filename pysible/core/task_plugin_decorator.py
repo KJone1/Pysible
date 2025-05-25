@@ -1,11 +1,10 @@
 import functools
 
-from pysible.config.settings import settings
+from pysible.config.settings import settings, Sections
 from pysible.core.task import Task
-from pysible.core.task_manager import Sections
 
 
-def task_plugin(name: str, section: Sections, params: dict | None = None):
+def task_plugin(name: str, section: Sections, params: dict[str, str] | None = None):
     def decorator(func):
         @functools.wraps(func)
         def wrapper(*args, **kwargs):

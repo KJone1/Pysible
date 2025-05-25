@@ -1,6 +1,7 @@
 from enum import Enum
 from pathlib import Path
 
+from pysible.core.task import Task
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -17,7 +18,7 @@ class AppSettings(BaseSettings):
     HOME_DIR: Path = Path.home()
     RESOURCES_DIR_NAME: str = "resources"
     TMP_DIR_NAME: str = "tmp"
-    REGISTERED_TASKS: list = []
+    REGISTERED_TASKS: list[Task] = []
 
     @property
     def ROOT_DIR(self) -> Path:
