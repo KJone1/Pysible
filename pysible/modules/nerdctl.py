@@ -1,20 +1,23 @@
+
 import sh
+from requests import HTTPError
 
 import pysible.utils.file_utils as files
 import pysible.utils.net_utils as net
 from pysible.config.settings import Sections, settings
 from pysible.core.task_plugin_decorator import task_plugin
+from pysible.exceptions.task_exceptions import TaskFailedException
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
 
 @task_plugin(
-    name="Install nerdctl", section=Sections.SOFTWARE, params={"version": "2.0.0"}
+    name="Install nerdctl", section=Sections.SOFTWARE
 )
-def install_nerdctl(version: str = "2.0.0") -> None:
-    nerdctl_url = f"https://github.com/containerd/nerdctl/releases/download/v{version}/nerdctl-{version}-linux-amd64.tar.gz"
+def install_nerdctl() -> None:
+    version = net.get_latest_version_from_github(repo_owner="containerd",repo_name="nerdctl")
+    nerdctl_url = f"https://github.com/containerd/nerdctl/releases/download/{version}/nerdctl-{version[1:]}-linux-amd64.tar.gz"
     nerdctl_bin_dest = "/usr/local/bin/nerdctl"
-
     Logger.info("Starting to install nerdctl...")
     try:
 
@@ -33,9 +36,27 @@ def install_nerdctl(version: str = "2.0.0") -> None:
         )
         files.set_file_permissions(nerdctl_bin_dest, "555")
         Logger.success(f"Installed nerdctl {version}")
+    except HTTPError as e:
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Failed to download nerdctl",
+        )
     except (OSError, ValueError) as e:
-        Logger.failure(f"Failed to set nerdctl permissions -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Failed to set nerdctl permissions",
+        )
     except (sh.ErrorReturnCode, FileNotFoundError) as e:
-        Logger.failure(f"Failed to copy nerdctl.toml -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Failed to copy nerdctl.toml",
+        )
     except Exception as e:
-        Logger.failure(f"caught unexpected nerdctl error -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Caught unexpected nerdctl error",
+        )

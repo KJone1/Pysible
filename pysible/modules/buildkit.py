@@ -4,14 +4,16 @@ import pysible.utils.file_utils as files
 import pysible.utils.net_utils as net
 from pysible.config.settings import Sections, settings
 from pysible.core.task_plugin_decorator import task_plugin
+from pysible.exceptions.task_exceptions import TaskFailedException
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
 
 @task_plugin(
-    name="Install Buildkit", section=Sections.SOFTWARE, params={"version": "v0.21.0"}
+    name="Install Buildkit", section=Sections.SOFTWARE
 )
-def install_buildkit(version: str) -> None:
+def install_buildkit() -> None:
+    version = net.get_latest_version_from_github(repo_owner="moby",repo_name="buildkit")
     url = f"https://github.com/moby/buildkit/releases/download/{version}/buildkit-{version}.linux-amd64.tar.gz"
     tmp_dir_name = "buildkit"
     tmp_dir_path = f"{settings.TMP_DIR}/{tmp_dir_name}"
@@ -42,7 +44,14 @@ def install_buildkit(version: str) -> None:
         Logger.success(f"Installed buildkit {version}")
 
     except sh.ErrorReturnCode as e:
-        error = "Encounter an ErrorReturnCode when tried to install Tomb"
-        Logger.failure(f"{error} -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e
+        )
     except Exception as e:
-        Logger.failure(f"Failed to install Buildkit -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Caught unexpected builtkit error",
+        )
+
