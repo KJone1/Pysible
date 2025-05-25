@@ -39,7 +39,8 @@ def git_clone(repo_url: str, dest: str) -> None:
     except FileExistsError:
         sh.contrib.git.pull(_cwd=dest)
 
-def get_latest_version_from_github(repo_owner:str, repo_name:str):
+
+def get_latest_version_from_github(repo_owner: str, repo_name: str) -> str:
     """
     Fetches the latest release version (tag name) for a given GitHub repository.
 
