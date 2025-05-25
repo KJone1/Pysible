@@ -15,9 +15,9 @@ def _update_sddm_theme(config_file_path: str, theme_name: str) -> None:
     with open(config_file_path, "w") as f:
         for line in lines:
             if re.match(r"^Current=", line):
-                f.write(f"Current={theme_name}\n")
+                _ = f.write(f"Current={theme_name}\n")
             else:
-                f.write(line)
+                _ = f.write(line)
 
 
 @task_plugin(name="Setup SDDM theme", section=Sections.SYSTEM)

@@ -2,8 +2,8 @@ class TaskFailedException(Exception):
     def __init__(
         self,
         task_name: str,
-        error_msg: str,
         original_exception: Exception,
+        error_msg: str | None = None,
     ):
         self.task_name = task_name
         self.error_msg = error_msg

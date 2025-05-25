@@ -20,7 +20,6 @@ class TaskManager:
         ):
             try:
                 importlib.import_module(module_name)
-                Logger.info(f"Discovered module: {module_name}")
             except ImportError as e:
                 Logger.warn(f"Could not import module {module_name}: {e}")
 
