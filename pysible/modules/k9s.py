@@ -10,12 +10,12 @@ from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
 
-@task_plugin(
-    name="Install k9s", section=Sections.SOFTWARE
-)
+@task_plugin(name="Install k9s", section=Sections.SOFTWARE)
 def install_k9s():
     try:
-        version = net.get_latest_version_from_github(repo_owner="derailed",repo_name="k9s")
+        version = net.get_latest_version_from_github(
+            repo_owner="derailed", repo_name="k9s"
+        )
         k9s_url = f"https://github.com/derailed/k9s/releases/download/{version}/k9s_Linux_amd64.rpm"
         k9s_tmp_dir_name = "k9s"
         k9s_tmp_dir_path = f"{settings.TMP_DIR}/{k9s_tmp_dir_name}"

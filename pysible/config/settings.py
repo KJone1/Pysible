@@ -1,8 +1,9 @@
 from enum import Enum
 from pathlib import Path
 
-from pysible.core.task import Task
 from pydantic_settings import BaseSettings, SettingsConfigDict
+
+from pysible.core.task import Task
 
 
 class Sections(Enum):

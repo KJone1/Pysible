@@ -1,6 +1,6 @@
 import functools
 
-from pysible.config.settings import settings, Sections
+from pysible.config.settings import Sections, settings
 from pysible.core.task import Task
 
 

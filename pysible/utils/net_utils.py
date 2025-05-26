@@ -52,7 +52,7 @@ def get_latest_version_from_github(repo_owner: str, repo_name: str) -> str:
         str: The tag name of the latest release, or None if an error occurs.
     """
     api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
-    response = requests.get(api_url)
+    response = requests.get(api_url, timeout=30)
     response.raise_for_status()
     release_info = response.json()
     return release_info.get("tag_name")

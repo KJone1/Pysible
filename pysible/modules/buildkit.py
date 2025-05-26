@@ -9,11 +9,11 @@ from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
 
-@task_plugin(
-    name="Install Buildkit", section=Sections.SOFTWARE
-)
+@task_plugin(name="Install Buildkit", section=Sections.SOFTWARE)
 def install_buildkit() -> None:
-    version = net.get_latest_version_from_github(repo_owner="moby",repo_name="buildkit")
+    version = net.get_latest_version_from_github(
+        repo_owner="moby", repo_name="buildkit"
+    )
     url = f"https://github.com/moby/buildkit/releases/download/{version}/buildkit-{version}.linux-amd64.tar.gz"
     tmp_dir_name = "buildkit"
     tmp_dir_path = f"{settings.TMP_DIR}/{tmp_dir_name}"
@@ -44,14 +44,10 @@ def install_buildkit() -> None:
         Logger.success(f"Installed buildkit {version}")
 
     except sh.ErrorReturnCode as e:
-        raise TaskFailedException(
-            task_name=__name__,
-            original_exception=e
-        )
+        raise TaskFailedException(task_name=__name__, original_exception=e)
     except Exception as e:
         raise TaskFailedException(
             task_name=__name__,
             original_exception=e,
             error_msg="Caught unexpected builtkit error",
         )
-

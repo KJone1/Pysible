@@ -1,4 +1,3 @@
-
 import sh
 from requests import HTTPError
 
@@ -11,11 +10,11 @@ from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir
 
 
-@task_plugin(
-    name="Install nerdctl", section=Sections.SOFTWARE
-)
+@task_plugin(name="Install nerdctl", section=Sections.SOFTWARE)
 def install_nerdctl() -> None:
-    version = net.get_latest_version_from_github(repo_owner="containerd",repo_name="nerdctl")
+    version = net.get_latest_version_from_github(
+        repo_owner="containerd", repo_name="nerdctl"
+    )
     nerdctl_url = f"https://github.com/containerd/nerdctl/releases/download/{version}/nerdctl-{version[1:]}-linux-amd64.tar.gz"
     nerdctl_bin_dest = "/usr/local/bin/nerdctl"
     Logger.info("Starting to install nerdctl...")

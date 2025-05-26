@@ -2,7 +2,6 @@ import os
 import tarfile
 
 import sh
-from loguru import logger
 
 from pysible.config.settings import settings
 
@@ -73,16 +72,7 @@ def set_file_permissions(file_path: str, permission: str) -> None:
 
 
 def copy(source: str, dest: str) -> None:
-    try:
-        destination_dir = os.path.dirname(dest)
-
-        if not os.path.exists(destination_dir):
-            sudo_run("mkdir", "-p", destination_dir)
-
-        sudo_run("cp", f"{source}", f"{dest}")
-    except FileNotFoundError:
-        logger.error(f"Source file '{source}' not found.")
-    except PermissionError:
-        logger.error(f"Permission denied to copy to '{dest}'.")
-    except Exception as e:
-        logger.error(f"An unexpected error occurred: {e}")
+    destination_dir = os.path.dirname(dest)
+    if not os.path.exists(destination_dir):
+        sudo_run("mkdir", "-p", destination_dir)
+    sudo_run("cp", f"{source}", f"{dest}")
