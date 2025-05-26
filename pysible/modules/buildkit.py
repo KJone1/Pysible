@@ -19,7 +19,7 @@ def install_buildkit() -> None:
     tmp_dir_path = f"{settings.TMP_DIR}/{tmp_dir_name}"
     buildkitd_dest = "/usr/local/bin/buildkitd"
     buildctl_dest = "/usr/local/bin/buildctl"
-    Logger.info("Starting to install Buildkit...")
+    Logger.info(f"Starting to install Buildkit {version}...")
     try:
         create_tmp_dir(name=tmp_dir_name)
 

@@ -17,7 +17,7 @@ def install_nerdctl() -> None:
     )
     nerdctl_url = f"https://github.com/containerd/nerdctl/releases/download/{version}/nerdctl-{version[1:]}-linux-amd64.tar.gz"
     nerdctl_bin_dest = "/usr/local/bin/nerdctl"
-    Logger.info("Starting to install nerdctl...")
+    Logger.info(f"Starting to install nerdctl {version}...")
     try:
 
         create_tmp_dir(name="nerdctl")
