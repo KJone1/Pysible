@@ -2,7 +2,6 @@ from os import path
 
 import sh
 
-import pysible.exceptions.dotfiles as exceptions
 from pysible.config.settings import Sections, settings
 from pysible.core.task_plugin_decorator import task_plugin
 from pysible.exceptions.task_exceptions import TaskFailedException
@@ -34,13 +33,7 @@ def install_dotfiles():
         raise TaskFailedException(
             task_name=__name__,
             original_exception=e,
-            error_msg="Git clone returned a failure status code",
-        )
-    except exceptions.DotfilesInstallError as e:
-        raise TaskFailedException(
-            task_name=__name__,
-            original_exception=e,
-            error_msg="Error running dotfiles install script",
+            error_msg="Dotfiles installation returned a bad status code",
         )
     except AttributeError as e:
         raise TaskFailedException(
