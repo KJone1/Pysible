@@ -1,14 +1,15 @@
 import os
 from collections import defaultdict
 
+import sh
 from rich.box import SIMPLE_HEAVY
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.table import Table
 
+from pysible.config.settings import settings, Sections
 from pysible.core.task import Task
-from pysible.core.task_manager import Sections, TaskManager
-from pysible.exceptions.task_exceptions import TaskFailedException
+from pysible.core.task_manager import TaskManager
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import delete_tmp_dir
 
@@ -18,7 +19,8 @@ class PysibleApp:
         self.console: Console = Console()
         self.task_manager: TaskManager = TaskManager()
         delete_tmp_dir()
-        os.system("clear")
+        sh.mkdir("-p", settings.TMP_DIR)
+        _ = os.system("clear")
 
     def _get_user_input(self) -> str:
         return Prompt.ask("[bold blue]Pysible ~> [/bold blue]").strip()
