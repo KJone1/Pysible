@@ -27,17 +27,17 @@ def install_k9s():
         _ = pkg.install_package(local_rpm_name)
         Logger.success(f"Installed k9s {version}")
 
-    except (OSError, ValueError) as e:
-        raise TaskFailedException(
-            task_name=__name__,
-            original_exception=e,
-            error_msg="Failed to set k9s permissions",
-        )
     except requests.exceptions.RequestException as e:
         raise TaskFailedException(
             task_name=__name__,
             original_exception=e,
             error_msg="Error fetching release information",
+        )
+    except (OSError, ValueError) as e:
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Failed to set k9s permissions",
         )
     except KeyError as e:
         raise TaskFailedException(
@@ -57,7 +57,6 @@ def install_k9s():
             original_exception=e,
             error_msg="Error: Command 'dnf' not found. Is dnf installed and in the system PATH?",
         )
-
     except Exception as e:
         raise TaskFailedException(
             task_name=__name__,

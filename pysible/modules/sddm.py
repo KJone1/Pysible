@@ -4,6 +4,7 @@ from sh import ErrorReturnCode
 
 from pysible.config.settings import Sections
 from pysible.core.task_plugin_decorator import task_plugin
+from pysible.exceptions.task_exceptions import TaskFailedException
 from pysible.utils.log_utils import Logger
 from pysible.utils.net_utils import git_clone
 
@@ -33,12 +34,27 @@ def setup_sddm() -> None:
             config_file_path=sddm_config_file_path, theme_name=sddm_theme_name
         )
     except ErrorReturnCode as e:
-        Logger.failure(f"Git clone returned a failure status code -> {e}")
-    except AttributeError:
-        Logger.failure("Git not found")
-    except FileNotFoundError:
-        Logger.failure(
-            f"sddm.conf configuration file not found at: {sddm_config_file_path}"
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Git clone returned a failure status code",
+        )
+    except AttributeError as e:
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Git not found",
+        )
+    except FileNotFoundError as e:
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg=f"sddm.conf configuration file not found at: {sddm_config_file_path}",
         )
     except Exception as e:
-        Logger.failure(f"An error occurred while installing SDDM theme: {e}")
+        Logger.failure(f": {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="An error occurred while installing SDDM theme",
+        )

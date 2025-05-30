@@ -1,3 +1,4 @@
+from pysible.exceptions.task_exceptions import TaskFailedException
 import pysible.utils.file_utils as files
 from pysible.config.settings import Sections
 from pysible.core.task_plugin_decorator import task_plugin
@@ -12,4 +13,8 @@ def setup_moonlander() -> None:
         _ = files.copy_resource(filename=udev_rules, dest=rules_dir)
         Logger.success(f"Copied {udev_rules} to {rules_dir}")
     except Exception as e:
-        Logger.failure(f"Failed to copy {udev_rules} -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg=f"Failed to copy {udev_rules}",
+        )
