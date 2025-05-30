@@ -19,7 +19,7 @@ class TaskManager:
             package.__path__, package.__name__ + "."
         ):
             try:
-                importlib.import_module(module_name)
+                _ = importlib.import_module(module_name)
             except ImportError as e:
                 Logger.warn(f"Could not import module {module_name}: {e}")
 
