@@ -3,6 +3,9 @@ from os import makedirs
 import requests
 import sh
 
+from pysible.config.settings import settings
+from pysible.utils.file_utils import copy
+
 
 def wget(url: str, dest: str) -> None:
     """Downloads a file from a URL.
@@ -11,19 +14,17 @@ def wget(url: str, dest: str) -> None:
       url: The URL of the file to download.
       dest: The path where the file should be saved.
     """
-    try:
-        if not url.startswith("http"):
-            raise ValueError("Invalid URL format.")
+    if not url.startswith("http"):
+        raise ValueError("Invalid URL format.")
 
-        with requests.get(url, stream=True, timeout=30) as r:
-            r.raise_for_status()
-            with open(dest, "wb") as f:
-                for chunk in r.iter_content(chunk_size=8192):
-                    _ = f.write(chunk)
-    except requests.HTTPError as e:
-        raise requests.HTTPError(f"HTTP error occurred: {e}") from e
-    except Exception as e:
-        raise RuntimeError(f"wget error occurred while downloading {url} : {e}") from e
+    tempfile = f"{settings.TMP_DIR}/_tempdownload"
+    with requests.get(url, stream=True, timeout=30) as r:
+        r.raise_for_status()
+        with open(tempfile, "wb") as f:
+            for chunk in r.iter_content(chunk_size=8192):
+                _ = f.write(chunk)
+    copy(tempfile,dest)
+    sh.rm(tempfile)
 
 
 def git_clone(repo_url: str, dest: str) -> None:
