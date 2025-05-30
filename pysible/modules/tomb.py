@@ -2,6 +2,7 @@ import sh
 
 from pysible.config.settings import Sections, settings
 from pysible.core.task_plugin_decorator import task_plugin
+from pysible.exceptions.task_exceptions import TaskFailedException
 from pysible.utils.file_utils import untar
 from pysible.utils.log_utils import Logger
 from pysible.utils.misc_utils import create_tmp_dir, sudo_run
@@ -23,7 +24,14 @@ def install_tomb(version: str):
         sudo_run("make", "install", _cwd=tmp_dir_path, _out="/dev/null")
         Logger.success(f"Installed Tomb {version}")
     except sh.ErrorReturnCode as e:
-        error = "Encounter an ErrorReturnCode when tried to install Tomb"
-        Logger.failure(f"{error} -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Encounter an ErrorReturnCode when tried to install Tomb",
+        )
     except Exception as e:
-        Logger.failure(f"Encounter an error when tried to install Tomb -> {e}")
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Encounter an error when tried to install Tomb",
+        )
