@@ -11,7 +11,33 @@ from pysible.utils.log_utils import Logger
 
 
 def _download_kubectl(version: str) -> str:
+    """Downloads the kubectl binary if not already present or if outdated.
 
+    Checks if kubectl is already installed at /usr/local/bin/kubectl. If it is,
+    compares its version with the provided target version. If the installed
+    version matches the target version, the download is skipped. Otherwise, or
+    if kubectl is not found, it downloads the specified version of kubectl
+    from the official Kubernetes release URL.
+
+    Args:
+        version: The desired version string of kubectl to download (e.g., "v1.23.0").
+
+    Returns:
+        The path to the kubectl binary (/usr/local/bin/kubectl).
+
+    Side Effects:
+        - May download a file from the internet.
+        - Writes the downloaded file to /usr/local/bin/kubectl, potentially
+          overwriting an existing file. This requires sudo privileges if the
+          current user does not have write access.
+        - Logs informational messages about the current version and download process.
+
+    Raises:
+        ValueError: If the URL for downloading kubectl is invalid (though this is
+                    handled by net.wget).
+        requests.exceptions.RequestException: If downloading fails (handled by net.wget).
+        sh.ErrorReturnCode: If checking the version of an existing kubectl fails.
+    """
     kubectl_download_url = (
         f"https://dl.k8s.io/release/{version}/bin/linux/amd64/kubectl"
     )
@@ -38,6 +64,27 @@ def _download_kubectl(version: str) -> str:
 
 @task_plugin(name="Install kubectl", section=Sections.SOFTWARE)
 def install_kubectl():
+    """Installs the latest stable version of kubectl.
+
+    This function performs the following steps:
+    1. Fetches the latest stable version string from the Kubernetes release server.
+    2. Calls `_download_kubectl` to download the kubectl binary, if necessary.
+    3. Sets the downloaded kubectl binary's permissions to '555' (read and execute
+       for all users).
+
+    Side Effects:
+        - Interacts with the network to fetch the latest version string.
+        - Calls `_download_kubectl` which has its own side effects (downloading
+          files, writing to the file system).
+        - Modifies file permissions on /usr/local/bin/kubectl, typically
+          requiring sudo privileges.
+
+    Raises:
+        TaskFailedException: If fetching the version string fails, if downloading
+                             or setting permissions for kubectl fails (due to HTTP
+                             errors, permission errors, runtime errors, or other
+                             request exceptions), or any other unexpected error occurs.
+    """
     version_url = "https://dl.k8s.io/release/stable.txt"
     try:
         response = requests.get(version_url, timeout=15)

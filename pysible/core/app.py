@@ -15,7 +15,25 @@ from pysible.utils.misc_utils import delete_tmp_dir
 
 
 class PysibleApp:
+    """
+    Main application class for Pysible.
+
+    This class is responsible for initializing the application, managing the
+    user interface (displaying tasks and getting user input), and coordinating
+    the execution of selected tasks.
+    """
     def __init__(self):
+        """
+        Initializes the PysibleApp instance.
+
+        Sets up the console, task manager, and a temporary directory for
+        application use. It also clears the console screen upon initialization.
+
+        Side Effects:
+            - Deletes any existing temporary directory used by Pysible.
+            - Creates a new temporary directory.
+            - Clears the console screen.
+        """
         self.console: Console = Console()
         self.task_manager: TaskManager = TaskManager()
         delete_tmp_dir()
@@ -23,9 +41,36 @@ class PysibleApp:
         _ = os.system("clear")
 
     def _get_user_input(self) -> str:
+        """
+        Prompts the user for input and returns the stripped string.
+
+        Displays the Pysible command prompt and waits for the user to enter
+        a command or task selection.
+
+        Returns:
+            The user's input string, with leading/trailing whitespace removed.
+        """
         return Prompt.ask("[bold blue]Pysible ~> [/bold blue]").strip()
 
-    def _handel_user_input(self, choice: str):
+    def _handle_user_input(self, choice: str):
+        """
+        Processes the user's input to determine which tasks to execute.
+
+        Parses the user's choice, which can be a special command (like '00'
+        for all tasks, '100' for system tasks, '200' for software tasks,
+        or 'q'/'exit'/'quit' to exit) or a list of task numbers.
+        Selected tasks are then executed.
+
+        Args:
+            choice: The user's input string.
+
+        Side Effects:
+            - Executes tasks based on the user's selection. Each task can have
+              its own side effects (e.g., installing software, modifying files).
+            - Prints informational messages or error messages to the console.
+            - Exits the application if the user chooses to quit.
+            - Deletes the temporary directory upon exit.
+        """
         tasks_to_execute: list[Task] = []
         match choice:
             case "00":
@@ -64,6 +109,16 @@ class PysibleApp:
             task.execute()
 
     def _render_menu_table(self):
+        """
+        Renders and displays a table of available tasks to the console.
+
+        The table categorizes tasks by section (e.g., System, Software) and
+        displays their assigned numbers and names. It also shows options for
+        running all tasks or all tasks within a specific section.
+
+        Side Effects:
+            - Prints a formatted table to the console.
+        """
         sections = [section.value for section in Sections]
         table = Table(
             box=SIMPLE_HEAVY,
@@ -105,11 +160,30 @@ class PysibleApp:
         self.console.print(table)
 
     def exit_handler(self) -> None:
+        """
+        Handles application exit by cleaning up resources.
+
+        Currently, this involves deleting the temporary directory used by Pysible.
+
+        Side Effects:
+            - Deletes the Pysible temporary directory.
+        """
         delete_tmp_dir()
 
     def run(self):
+        """
+        Starts the main application loop.
+
+        Continuously displays the task menu, gets user input, and handles
+        the input until the user chooses to exit.
+
+        Side Effects:
+            - Enters an infinite loop that can only be broken by user choosing
+              to exit or by an unhandled exception.
+            - Calls other methods that print to console and execute tasks.
+        """
         self.console.print("[bold green]Lets Roll...[/bold green]")
         while True:
             self._render_menu_table()
             user_choice = self._get_user_input()
-            self._handel_user_input(user_choice)
+            self._handle_user_input(user_choice)
