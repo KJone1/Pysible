@@ -11,6 +11,25 @@ from pysible.utils.misc_utils import create_tmp_dir
 
 @task_plugin(name="Install Buildkit", section=Sections.SOFTWARE)
 def install_buildkit() -> None:
+    """Installs Buildkit, a toolkit for converting source code to build artifacts.
+
+    This function performs the following steps:
+    1. Fetches the latest version of Buildkit from the moby/buildkit GitHub repository.
+    2. Constructs the download URL for the Linux amd64 binary.
+    3. Creates a temporary directory for the download.
+    4. Downloads the Buildkit tarball.
+    5. Extracts the tarball.
+    6. Copies the 'buildkitd' and 'buildctl' binaries to /usr/local/bin.
+    7. Sets execute permissions on the binaries.
+    8. Copies the systemd service file for Buildkit to /etc/systemd/system.
+    9. Copies the Buildkit daemon configuration file to /etc/buildkit.
+    10. Logs success or failure messages.
+
+    Raises:
+        TaskFailedException: If any step in the installation process fails,
+                             either due to a shell command error or any other
+                             unexpected exception.
+    """
     version = net.get_latest_version_from_github(
         repo_owner="moby", repo_name="buildkit"
     )

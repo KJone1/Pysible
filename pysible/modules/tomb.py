@@ -11,6 +11,32 @@ from pysible.utils.net_utils import wget
 
 @task_plugin(name="Install Tomb", section=Sections.SOFTWARE, params={"version": "2.11"})
 def install_tomb(version: str):
+    """Installs Tomb, a tool for creating encrypted file storage.
+
+    This function downloads a specific version of Tomb from its GitHub
+    repository, extracts it, and then runs `make install` to install it
+    on the system.
+
+    Args:
+        version: The version string of Tomb to install (e.g., "2.11").
+                 This version is specified in the `@task_plugin` decorator's
+                 params and passed by the Pysible core.
+
+    Side Effects:
+        - Creates a temporary directory.
+        - Downloads a tarball from the internet.
+        - Extracts the tarball in the temporary directory.
+        - Runs `sudo make install`, which copies files to system locations
+          (e.g., /usr/local/bin, /usr/local/share/man) and requires sudo
+          privileges.
+        - Logs information about the process, including success or failure.
+
+    Raises:
+        TaskFailedException: If any step of the process fails, including
+                             download errors, extraction errors, `make install`
+                             returning a non-zero exit code (sh.ErrorReturnCode),
+                             or any other unexpected Python exception.
+    """
     tmp_dir_name = "tomb"
     tmp_dir_path = f"{settings.TMP_DIR}/{tmp_dir_name}"
     url = f"https://github.com/dyne/tomb/archive/refs/tags/v{version}.tar.gz"
