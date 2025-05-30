@@ -36,7 +36,7 @@ class PysibleApp:
                 Logger.info("Selected: Run all SYSTEM tasks.")
             case "200":
                 tasks_to_execute = self.task_manager.get_tasks_by_section(
-                    Sections.SYSTEM
+                    Sections.SOFTWARE
                 )
                 Logger.info("Selected: Run all SOFTWARE tasks.")
             case "q" | "exit" | "quit":
