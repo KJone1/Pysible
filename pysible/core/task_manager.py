@@ -40,4 +40,4 @@ class TaskManager:
         return list(self.tasks.values())
 
     def get_tasks_by_section(self, section: Sections) -> list[Task]:
-        return [task for task in self.tasks.values() if task.section == section]
+        return [task for task in self.tasks.values() if task.section == section.value]
