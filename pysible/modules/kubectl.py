@@ -12,12 +12,14 @@ from pysible.utils.log_utils import Logger
 
 def _download_kubectl(version: str) -> str:
 
-    kubectl_download_url = f"https://dl.k8s.io/release/{version}/bin/linux/amd64/kubectl"
+    kubectl_download_url = (
+        f"https://dl.k8s.io/release/{version}/bin/linux/amd64/kubectl"
+    )
     kubectl_path = "/usr/local/bin/kubectl"
 
     if os.path.exists(kubectl_path):
         kubectl = sh.Command(kubectl_path)
-        installed_version = kubectl("version", "--client", "-o=json",_ok_code=[0, 1])
+        installed_version = kubectl("version", "--client", "-o=json", _ok_code=[0, 1])
         if installed_version:
             version_data = json.loads(str(installed_version))
             installed_version_str: str = version_data.get("clientVersion", {}).get(
@@ -27,9 +29,7 @@ def _download_kubectl(version: str) -> str:
                 f"Currently installed version: {installed_version_str}, latest: {version}"
             )
             if installed_version_str == version:
-                Logger.info(
-                    "Skipping download"
-                )
+                Logger.info("Skipping download")
     else:
         Logger.info(f"Downloading kubectl {version}")
         net.wget(url=kubectl_download_url, dest=kubectl_path)
