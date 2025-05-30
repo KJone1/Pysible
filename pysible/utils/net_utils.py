@@ -23,7 +23,7 @@ def wget(url: str, dest: str) -> None:
         with open(tempfile, "wb") as f:
             for chunk in r.iter_content(chunk_size=8192):
                 _ = f.write(chunk)
-    copy(tempfile,dest)
+    copy(tempfile, dest)
     sh.rm(tempfile)
 
 
@@ -52,7 +52,7 @@ def get_latest_version_from_github(repo_owner: str, repo_name: str) -> str:
     Returns:
         str: The tag name of the latest release, or None if an error occurs.
     """
-    api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/releases/latest"
+    api_url = f"https://api.github.com/repos/{repo_owner}/{repo_name}/tags/latest"
     response = requests.get(api_url, timeout=30)
     response.raise_for_status()
     release_info = response.json()
