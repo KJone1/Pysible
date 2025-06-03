@@ -6,7 +6,6 @@ from pysible.core.task_plugin_decorator import task_plugin
 @task_plugin(name="Install Flatpak Packages", section=Sections.SOFTWARE)
 def install_flatpak_packages():
     package_list = {
-        "com.discordapp.Discord",
         "io.github.flattool.Warehouse",
         "net.nokyan.Resources",
         "md.obsidian.Obsidian",
