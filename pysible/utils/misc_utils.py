@@ -15,7 +15,7 @@ def delete_tmp_dir() -> None:
         rmtree(settings.TMP_DIR)
 
 
-def sudo_run(command: str, *args, **kwargs) -> None:
+def sudo_run(command: str, *args: str, **kwargs: str) -> None:
     """
     executes a command with sudo privileges.
     args:
