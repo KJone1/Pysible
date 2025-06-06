@@ -24,10 +24,11 @@ def install_dotfiles():
     dotfile_dir = f"{settings.HOME_DIR}/DEV/dotfiles"
     repo_url = "https://github.com/KJone1/dotfiles.git"
 
+    Logger.info("Starting to install dotfiles")
     try:
         git_clone(repo_url=repo_url, dest=dotfile_dir)
         _run_dotfiles_install_script(dotfiles_repo_path=dotfile_dir)
-        Logger.success("Successfully setup dotfiles")
+        Logger.success("Successfully installed dotfiles")
 
     except sh.ErrorReturnCode as e:
         raise TaskFailedException(

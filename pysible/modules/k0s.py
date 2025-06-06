@@ -12,6 +12,7 @@ def install_k0s() -> None:
     try:
         sh.bash("curl -sSLf https://get.k0s.sh | sudo sh")
         sh.bash("k0s install controller --force --single")
+        Logger.success("Successfully installed k0s")
     except sh.ErrorReturnCode as e:
         raise TaskFailedException(
             task_name=__name__,

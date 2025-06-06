@@ -46,6 +46,7 @@ def install_kubectl():
 
         path = _download_kubectl(version)
         files.set_file_permissions(path, "555")
+        Logger.success("Successfully installed kubectl")
     except requests.HTTPError as e:
         raise TaskFailedException(
             task_name=__name__,
