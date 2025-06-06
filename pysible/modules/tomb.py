@@ -1,3 +1,4 @@
+import requests
 import sh
 
 from pysible.config.settings import Sections, settings
@@ -9,20 +10,33 @@ from pysible.utils.misc_utils import create_tmp_dir, sudo_run
 from pysible.utils.net_utils import wget
 
 
-@task_plugin(name="Install Tomb", section=Sections.SOFTWARE, params={"version": "2.11"})
-def install_tomb(version: str):
+@task_plugin(name="Install Tomb", section=Sections.SOFTWARE)
+def install_tomb():
     tmp_dir_name = "tomb"
     tmp_dir_path = f"{settings.TMP_DIR}/{tmp_dir_name}"
-    url = f"https://github.com/dyne/tomb/archive/refs/tags/v{version}.tar.gz"
-    file_dest = f"{tmp_dir_path}/{version}.tar.gz"
+    api_url = "https://api.github.com/repos/dyne/tomb/tags"
 
-    Logger.info("Starting to install Tomb...")
     try:
+        response = requests.get(api_url, timeout=30)
+        response.raise_for_status()
+        latest_release = response.json()[0]
+        latest_version = latest_release.get("name")
+        url = f"https://github.com/dyne/tomb/archive/refs/tags/{latest_version}.tar.gz"
+        file_dest = f"{tmp_dir_path}/{latest_version}.tar.gz"
+
+        Logger.info(f"Starting to install Tomb {latest_version}...")
+
         create_tmp_dir(name=tmp_dir_name)
         wget(url=url, dest=file_dest)
         untar(input_tar=file_dest, output=tmp_dir_path, strip=True)
         sudo_run("make", "install", _cwd=tmp_dir_path, _out="/dev/null")
-        Logger.success(f"Installed Tomb {version}")
+        Logger.success(f"Installed Tomb {latest_version}")
+    except requests.exceptions.RequestException as e:
+        raise TaskFailedException(
+            task_name=__name__,
+            original_exception=e,
+            error_msg="Error fetching release information for tomb",
+        )
     except sh.ErrorReturnCode as e:
         raise TaskFailedException(
             task_name=__name__,
