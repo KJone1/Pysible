@@ -1,3 +1,5 @@
+from types import FunctionType
+
 from pysible.exceptions.task_exceptions import TaskFailedException
 from pysible.utils.log_utils import Logger
 
@@ -7,13 +9,13 @@ class Task:
         self,
         number: int,
         name: str,
-        action_function,
+        action_function: FunctionType,
         section: str,
         params: dict[str, str] | None = None,
     ):
         self.number: int = number
         self.name: str = name
-        self.action_function = action_function
+        self.action_function: FunctionType = action_function
         self.section: str = section
         self.params: dict[str, str] | None = params if params is not None else {}
 
