@@ -1,7 +1,7 @@
-from pysible.exceptions.task_exceptions import TaskFailedException
 import pysible.utils.file_utils as files
 from pysible.config.settings import Sections
 from pysible.core.task_plugin_decorator import task_plugin
+from pysible.exceptions.task_exceptions import TaskFailedException
 from pysible.utils.log_utils import Logger
 
 

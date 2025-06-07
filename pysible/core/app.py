@@ -7,7 +7,7 @@ from rich.console import Console
 from rich.prompt import Prompt
 from rich.table import Table
 
-from pysible.config.settings import settings, Sections
+from pysible.config.settings import Sections, settings
 from pysible.core.task import Task
 from pysible.core.task_manager import TaskManager
 from pysible.utils.log_utils import Logger
