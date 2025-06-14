@@ -67,7 +67,6 @@ def install(package_manager: str, package_list: set[str]) -> None:
     package_count = len(package_list)
 
     Logger.info(f"Starting installation of {package_count} {package_manager} packages.")
-
     try:
         installed_packages = _install_packages_parallel(package_list, package_manager)
 

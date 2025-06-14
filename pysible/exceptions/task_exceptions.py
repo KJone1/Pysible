@@ -1,3 +1,6 @@
+from typing import override
+
+
 class TaskFailedException(Exception):
     def __init__(
         self,
@@ -14,5 +17,6 @@ class TaskFailedException(Exception):
             message = f"Task '{task_name}' failed. Original error: {type(original_exception).__name__}: {original_exception}"
         super().__init__(message)
 
+    @override
     def __str__(self):
         return f"{self.args[0]}"

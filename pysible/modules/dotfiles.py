@@ -20,7 +20,7 @@ def _run_dotfiles_install_script(dotfiles_repo_path: str) -> None:
     name="Install Dot files",
     section=Sections.SYSTEM,
 )
-def install_dotfiles():
+def install_dotfiles() -> None:
     dotfile_dir = f"{settings.HOME_DIR}/DEV/dotfiles"
     repo_url = "https://github.com/KJone1/dotfiles.git"
 
