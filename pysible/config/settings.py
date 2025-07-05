@@ -15,7 +15,7 @@ class AppSettings(BaseSettings):
     model_config = SettingsConfigDict(
         env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
-    ROOT_PASS: str
+    ROOT_PASS: str = ""
     HOME_DIR: Path = Path.home()
     RESOURCES_DIR_NAME: str = "resources"
     TMP_DIR_NAME: str = "tmp"
