@@ -1,25 +1,20 @@
 import os
 from collections import defaultdict
-
-import sh
 from rich.box import SIMPLE_HEAVY
 from rich.console import Console
 from rich.prompt import Prompt
 from rich.table import Table
 
-from pysible.config.settings import Sections, settings
+from pysible.config.settings import Sections
 from pysible.core.task import Task
 from pysible.core.task_manager import TaskManager
 from pysible.utils.log_utils import Logger
-from pysible.utils.misc_utils import delete_tmp_dir
 
 
 class PysibleApp:
     def __init__(self):
         self.console: Console = Console()
         self.task_manager: TaskManager = TaskManager()
-        delete_tmp_dir()
-        sh.mkdir("-p", settings.TMP_DIR)
         _ = os.system("clear")
 
     def _get_user_input(self) -> str:
@@ -42,7 +37,6 @@ class PysibleApp:
                 )
                 Logger.info("Selected: Run all SOFTWARE tasks.")
             case "q" | "exit" | "quit":
-                delete_tmp_dir()
                 exit(0)
             case _:
                 selected_modules = [
@@ -104,12 +98,11 @@ class PysibleApp:
         )
         self.console.print(table)
 
-    def exit_handler(self) -> None:
-        delete_tmp_dir()
-
     def run(self):
         self.console.print("[bold green]Lets Roll...[/bold green]")
         while True:
             self._render_menu_table()
             user_choice = self._get_user_input()
             self._handel_user_input(user_choice)
+            _ = Prompt.ask("\nEnter any key to continue")
+            self.console.print("\n-----------------------------------------\n")
